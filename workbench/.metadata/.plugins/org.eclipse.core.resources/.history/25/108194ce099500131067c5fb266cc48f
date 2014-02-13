@@ -219,7 +219,7 @@ public class smartAgent extends Agent{
 			int[] diff = new int[2];
 			diff[0] = currentState.stateID;
 			diff[1] = episodicMemory.get(indexList.get(index)).stateID;
-			diffStates.add(diff);
+			equivStates.add(diff);
 		}
 		
 		
