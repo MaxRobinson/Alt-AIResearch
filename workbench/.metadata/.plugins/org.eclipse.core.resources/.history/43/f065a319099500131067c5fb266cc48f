@@ -238,10 +238,8 @@ public class smartAgent extends Agent{
 		return false;
 	}
 	
-	
-	//New 2/13/14
 	//This method will update the transition table for as long as there are same states
-	public void updateTransitionTable(){
+	public void updateTranitionTable(){
 		if(equivStates.size() <= 0){
 			return;
 		}
@@ -345,7 +343,7 @@ public class smartAgent extends Agent{
 			this.analyzeMove(/*Step 5*/);				// Checks to see if the state we land in is one we recognize
 			
 			// step 6
-			//this.moveRandom( /*boolean analysis */); 	// analysis will be returned from analyzeMove()
+			this.moveRandom( /*boolean analysis */); 	// analysis will be returned from analyzeMove()
 			
 			// step 7 == step 5 ish
 			//this.testConjecture();

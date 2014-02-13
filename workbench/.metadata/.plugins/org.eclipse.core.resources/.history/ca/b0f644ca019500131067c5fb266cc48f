@@ -52,7 +52,7 @@ public class RandomAgent extends Agent{
 		tester.currentPath = testCurrent;
 		
 		if(tester.analyzeMove()){
-			System.out.println("SUCCESS!!!!");
+			System.out.println("FUCK YEAH MOTHER FUCKER!!!!");
 		}
 		
 		
@@ -78,7 +78,7 @@ public class RandomAgent extends Agent{
 		tester2.currentPath = testCurrent2;
 		
 		if(tester2.analyzeMove()){
-			System.out.println("SUCCESS!!!!");
+			System.out.println("FUCK YEAH MOTHER FUCKER!!!!");
 		}
 		
 		

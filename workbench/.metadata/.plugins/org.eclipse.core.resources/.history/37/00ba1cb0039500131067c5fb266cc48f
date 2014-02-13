@@ -184,7 +184,7 @@ public class smartAgent extends Agent{
 			
 			indexList = checkIfEpisodeOccured(decrementArrayList(indexList,currentMatchedPathLength), currentState);
 			
-			
+			//System.out.println(indexList.get(0));  //THIS IS FOR TESTING TAKE ME OUT!!!! Later of course
 			
 			if(indexList.size() > 0){
 				currentMatchedPathLength++;
@@ -195,38 +195,24 @@ public class smartAgent extends Agent{
 		//what Happens if it cannot find just one match to the path? 
 		//it will use the most recent one. 
 		
-		
+		//return true;  /// This is also for TESTING
 		
 		if(!(indexList.size() > 0)){
 			indexList = indexListTemp;
 		}
-		int index = indexList.size()-1;
 		//call build Conjecture path on the last index of indexlist (this will always call the last one)
-		conjecturePath = buildConjecturePath(indexList.get(index));
+		conjecturePath = buildConjecturePath(indexList.get(indexList.size()-1));
 		
 		//test the conjectured Path
 		boolean theyAreTheSame = testConjecture(conjecturePath);
 		
 		if(theyAreTheSame){
 			//add these to the sameStates Table thingy.....yyyyyyyyyyyy
-			int[] same = new int[2];
-			same[0] = currentState.stateID;
-			same[1] = episodicMemory.get(indexList.get(index)).stateID;
-			equivStates.add(same);
 		}
 		else{
 			//add these to the not sateStates table thingy....yyyyyyyyyyy
-			int[] diff = new int[2];
-			diff[0] = currentState.stateID;
-			diff[1] = episodicMemory.get(indexList.get(index)).stateID;
-			equivStates.add(diff);
+			
 		}
-		
-		
-		//Now we know if the two states are the same or different.
-		//We now need to update the transition table. 
-		updateTransitionTable();
-		
 		
 		
 		//FOR TESTING
@@ -237,22 +223,6 @@ public class smartAgent extends Agent{
 		//update transition table.... probably
 		return false;
 	}
-	
-	
-	//New 2/13/14
-	//This method will update the transition table for as long as there are same states
-	public void updateTransitionTable(){
-		if(equivStates.size() <= 0){
-			return;
-		}
-		
-		
-		
-	}
-	
-	
-	
-	
 	
 	//
 	public ArrayList<Integer> decrementArrayList(ArrayList<Integer> list, int decrementAmount){
