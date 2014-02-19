@@ -26,7 +26,7 @@ public class Episode {
 	public Episode(Episode episode){
 		this.command = episode.command;
 		this.sensorValue = episode.sensorValue;
-		this.stateID = new StateID(episode.stateID.get());
+		this.stateID = episode.stateID;
 	}
     
 }

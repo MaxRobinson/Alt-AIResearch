@@ -84,7 +84,7 @@ public class smartAgent extends Agent{
 			int index = findIndex(command);
 			//now we have index of the command
 			//we also have the state ID of the state.
-			int state = next.stateID.get();
+			int state = next.stateID;
 			int[] myTableEntry = new int[alphabet.length];
 			
 			//Used to init the array to UNKNOWN_TRANSITION to start 
@@ -210,15 +210,15 @@ public class smartAgent extends Agent{
 		if(theyAreTheSame){
 			//add these to the sameStates Table thingy.....yyyyyyyyyyyy
 			int[] same = new int[2];
-			same[0] = currentState.stateID.get();
-			same[1] = episodicMemory.get(indexList.get(index)).stateID.get();
+			same[0] = currentState.stateID;
+			same[1] = episodicMemory.get(indexList.get(index)).stateID;
 			equivStates.add(same);
 		}
 		else{
 			//add these to the not sateStates table thingy....yyyyyyyyyyy
 			int[] diff = new int[2];
-			diff[0] = currentState.stateID.get();
-			diff[1] = episodicMemory.get(indexList.get(index)).stateID.get();
+			diff[0] = currentState.stateID;
+			diff[1] = episodicMemory.get(indexList.get(index)).stateID;
 			diffStates.add(diff);
 		}
 		
