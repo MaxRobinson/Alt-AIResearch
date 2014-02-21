@@ -84,7 +84,7 @@ public class RandomAgent extends Agent{
 		}
 		
 		tester2.initTransTable();
-
+		
 		tester2.printTransTable();
 		
 	}

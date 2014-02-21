@@ -64,7 +64,7 @@ public class RandomAgent extends Agent{
 		smartAgent tester2 = new smartAgent(testEnv5);
 		
 		ArrayList<Episode> testMem2 = new ArrayList<Episode>();
-		testMem2.add(new Episode(' ', 0, 1));
+		testMem2.add(new Episode('a', 0, 1));
 		testMem2.add(new Episode('b', 0, 2));
 		testMem2.add(new Episode('c', 0, 3));
 		testMem2.add(new Episode('b', 0, 4));
@@ -84,7 +84,7 @@ public class RandomAgent extends Agent{
 		}
 		
 		tester2.initTransTable();
-
+		
 		tester2.printTransTable();
 		
 	}

@@ -9,13 +9,12 @@ public class smartAgent extends Agent{
 	protected int UNKNOWN_STATE = -1;
 	
 	// An ArrayList of arrays that are length 2 to allow us to store which states we think are equal
-	protected ArrayList<StateID[]> equivStates = new ArrayList<StateID[]>();
+	protected ArrayList<int[]> equivStates = new ArrayList<int[]>();
 	
 	// An ArrayList of arrays that are length 2 to allow us to store which states we think are not equal
-	protected ArrayList<StateID[]> diffStates = new ArrayList<StateID[]>();
+	protected ArrayList<int[]> diffStates = new ArrayList<int[]>();
 	
 	// Holds the Agents current transition table (what it thinks the transition table is)
-	//***************** THIS NEEDS TO CHANGE TO AN ArrayList<StateID[]> transitionTable ***************************
 	protected ArrayList<int[]> transitionTable;				// we can know the length of alphabet but don't know how many states there are going to be
 	
 	// Which state the agent thinks it is in currently
@@ -213,23 +212,23 @@ public class smartAgent extends Agent{
 		
 		if(theyAreTheSame){
 			//add these to the sameStates Table thingy.....yyyyyyyyyyyy
-			StateID[] same = new StateID[2];
-			same[0] = currentState.stateID;
-			same[1] = episodicMemory.get(indexList.get(index)).stateID;
+			int[] same = new int[2];
+			same[0] = currentState.stateID.get();
+			same[1] = episodicMemory.get(indexList.get(index)).stateID.get();
 			equivStates.add(same);
 		}
 		else{
 			//add these to the not sateStates table thingy....yyyyyyyyyyy
-			StateID[] diff = new StateID[2];
-			diff[0] = currentState.stateID;
-			diff[1] = episodicMemory.get(indexList.get(index)).stateID;
+			int[] diff = new int[2];
+			diff[0] = currentState.stateID.get();
+			diff[1] = episodicMemory.get(indexList.get(index)).stateID.get();
 			diffStates.add(diff);
 		}
 		
 		
 		//Now we know if the two states are the same or different.
 		//We now need to update the transition table. 
-		modifyTransitionTable();
+		updateTransitionTable();
 		
 		
 		
@@ -245,44 +244,24 @@ public class smartAgent extends Agent{
 	
 	//New 2/13/14
 	//This method will update the transition table for as long as there are same states
-	/**
-	 * modifyTransitionTable()
-	 * This sets the states equal to each other or calls adds it to transition table.
-	 */
-	public void modifyTransitionTable(){
+	public void updateTransitionTable(){
 		
 		// Sanity check 
 		if(equivStates.size() <= 0 && diffStates.size() <=0){
 			return;  // If this happens SOMETHING IS BROKEN!!!!!!!!!!
 		}
 		if(equivStates.size() > 0){
-			// Spot 0 in equivStates holds CurrentState
-			// Spot 1 in equivStates holds the state it is equal to
-			equivStates.get(0)[1] = equivStates.get(0)[0];   
+			
 		}
-		if(diffStates.size() > 0){
-			// call addToTransitionTable()
-			addToTransitionTable();
-		}
-
-	}
-	
-	
-	/**
-	 * addToTransitionTable()
-	 */
-	public void addToTransitionTable(){
+		
 		
 	}
 	
 	
 	
-	/**
-	 * 
-	 * @param list
-	 * @param decrementAmount
-	 * @return
-	 */
+	
+	
+	//
 	public ArrayList<Integer> decrementArrayList(ArrayList<Integer> list, int decrementAmount){
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		temp = list;
@@ -320,11 +299,6 @@ public class smartAgent extends Agent{
 		return indexList;
 	}
 	
-	/**
-	 * 
-	 * @param index
-	 * @return
-	 */
 	// Builds Path from conjectured same state to goal.
 	public ArrayList<Episode> buildConjecturePath(int index){
 		
@@ -354,20 +328,6 @@ public class smartAgent extends Agent{
 	}
 	
 	
-	/**
-	 * printTransTable()
-	 * This method prints out the smartAgents version of the Transition Table
-	 */
-	public void printTransTable(){
-		for(int i = 0;  i < transitionTable.size();  ++i){
-			for(int j = 0; j < alphabet.length; j++){
-				System.out.print(transitionTable.get(i)[j]+ " ");
-			}
-			System.out.println("");
-		}
-		
-	}
-	
 	/*
 	 * findBestPath()
 	 * This method finds the best path for the agent from the start to finish
@@ -393,7 +353,7 @@ public class smartAgent extends Agent{
 			
 			// Hey if not seen this pattern before, I need to be added to the transition table.
 			// Uses the last State in the currentPath();
-			// this.addToTransitionTable();
+			//this.addToTransitionTable();
 			
 			// step 6
 			//this.moveRandom( /*boolean analysis */); 	// analysis will be returned from analyzeMove()
