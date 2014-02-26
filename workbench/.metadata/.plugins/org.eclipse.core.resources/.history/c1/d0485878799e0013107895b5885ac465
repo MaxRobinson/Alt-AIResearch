@@ -434,8 +434,8 @@ public class smartAgent extends Agent{
 			// step 6
 			if(patternHasBeenSeen){
 				//Move by conjecture Path
-				//this.moveToEnd();
-				//this.addCurrentPathToEpisodic();
+				this.moveToEnd();
+				this.addCurrentPathToEpisodic();
 			}
 			else{
 				//Move Random

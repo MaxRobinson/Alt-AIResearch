@@ -16,7 +16,7 @@ public class smartAgent extends Agent{
 	
 	// Holds the Agents current transition table (what it thinks the transition table is)
 	//***************** THIS NEEDS TO CHANGE TO AN ArrayList<StateID[]> transitionTable ***************************
-	protected ArrayList<StateID[]> transitionTable;				// we can know the length of alphabet but don't know how many states there are going to be
+	protected ArrayList<int[]> transitionTable;				// we can know the length of alphabet but don't know how many states there are going to be
 	
 	// Which state the agent thinks it is in currently
 	protected int currentState;
@@ -36,13 +36,13 @@ public class smartAgent extends Agent{
 	
 	public smartAgent(){
 		super();
-		transitionTable = new ArrayList<StateID[]>();
+		transitionTable = new ArrayList<int[]>();
 		currentState = 0;
 	}
 	
 	public smartAgent(StateMachineEnvironment environment){
 		super(environment);
-		transitionTable = new ArrayList<StateID[]>();
+		transitionTable = new ArrayList<int[]>();
 		currentState = 0;
 	}
 	
@@ -55,7 +55,7 @@ public class smartAgent extends Agent{
 		//Look through it to find the next open STATE (not next move from that state)
 		for(int i = 0; i < transitionTable.size();  ++i){
 			for(int j = 0; j< transitionTable.get(i).length; ++j){
-				if(transitionTable.get(i)[j].get() == UNKNOWN_TRANSITION){
+				if(transitionTable.get(i)[j] == UNKNOWN_TRANSITION){
 					//return transitionTable.get(i);
 					return i;
 				}
@@ -87,13 +87,13 @@ public class smartAgent extends Agent{
 			//now we have index of the command
 			//we also have the state ID of the state.
 			int state = next.stateID.get();
-			StateID[] myTableEntry = new StateID[alphabet.length];
+			int[] myTableEntry = new int[alphabet.length];
 			
 			//Used to init the array to UNKNOWN_TRANSITION to start 
 			for(int j = 0; j<myTableEntry.length; ++j){
-				myTableEntry[j] = new StateID(UNKNOWN_TRANSITION);
+				myTableEntry[j] = UNKNOWN_TRANSITION;
 			}
-			myTableEntry[index].set(state);
+			myTableEntry[index] = state;
 			transitionTable.add(myTableEntry);
 		}
 	}
@@ -102,6 +102,7 @@ public class smartAgent extends Agent{
 	/*
 	 * makeMove(int next)
 	 * given a state, makes a move, from that state that has not been tried before
+	 * records move in episodicMemory and edit the transition table
 	 */
 	public void makeMove(int next){
 		char nextMove;
@@ -109,7 +110,7 @@ public class smartAgent extends Agent{
 		do{
 			nextMove = randomChar(alphabet.length);
 			index = findIndex(nextMove);
-		}while(transitionTable.get(next)[index].get() != UNKNOWN_TRANSITION);
+		}while(transitionTable.get(next)[index] != UNKNOWN_TRANSITION);
 		//At this point we now know what move to make. Thee nextMove
 		
 		
@@ -144,9 +145,9 @@ public class smartAgent extends Agent{
 	 * argument to the while loop.
 	 */
 	public boolean isTransitionTableFull(){
-		for(StateID[] x : transitionTable){
+		for(int[] x : transitionTable){
 			for(int i = 0; i<x.length; ++i){
-				if(x[i].get() == UNKNOWN_TRANSITION){
+				if(x[i] == UNKNOWN_TRANSITION){
 					return false;
 				}
 			}
@@ -231,6 +232,7 @@ public class smartAgent extends Agent{
 		modifyTransitionTable();
 		
 		
+		
 		//FOR TESTING
 		if(indexList.get(indexList.size() -1) > -1 ){
 			return true;
@@ -256,20 +258,13 @@ public class smartAgent extends Agent{
 		if(equivStates.size() > 0){
 			// Spot 0 in equivStates holds CurrentState
 			// Spot 1 in equivStates holds the state it is equal to
-			equivStates.get(0)[1] = equivStates.get(0)[0];
-			//This is so this number for the "different state" is not used in the trans table.
-			//The index is then "thrown out" since the state doesn't exist but the counter of states
-			//is not reset or decremented if two states are equal. (continued count)
-			transitionTable.add(null); 
+			equivStates.get(0)[1] = equivStates.get(0)[0];   
 		}
 		if(diffStates.size() > 0){
 			// call addToTransitionTable()
 			addToTransitionTable();
 		}
-		
-		//set equivStates back to length 0.
-		equivStates.remove(0);
-		
+
 	}
 	
 	
@@ -278,18 +273,6 @@ public class smartAgent extends Agent{
 	 */
 	public void addToTransitionTable(){
 		
-		// We do not need to know the stateID of the diff state because we are assuming
-		// that up to this point we have the correct number of rows either null or not that 
-		// corresponds to numstates and thus by adding to the end of the transition Table
-		// it corresponds to the StateID of the diff state. 
-		StateID[] newState = new StateID[alphabet.length];
-		for(int j = 0; j<newState.length; ++j){
-			newState[j] = new StateID(UNKNOWN_TRANSITION);
-		}
-		transitionTable.add(newState);
-		
-		//sets diffStates back to length 0.
-		diffStates.remove(0);
 	}
 	
 	
@@ -378,29 +361,12 @@ public class smartAgent extends Agent{
 	public void printTransTable(){
 		for(int i = 0;  i < transitionTable.size();  ++i){
 			for(int j = 0; j < alphabet.length; j++){
-				System.out.print(transitionTable.get(i)[j].get()+ " ");
+				System.out.print(transitionTable.get(i)[j]+ " ");
 			}
 			System.out.println("");
 		}
 		
 	}
-	
-	
-	public void moveToEnd(){
-		
-		
-	}
-	
-	
-	/**
-	 * 
-	 */
-	public void moveRandom(){
-		
-		
-		
-	}
-	
 	
 	/*
 	 * findBestPath()
@@ -423,29 +389,17 @@ public class smartAgent extends Agent{
 			this.makeMove(next);						// makes the move from the found open state
 			
 			// step 4
-			boolean patternHasBeenSeen = this.analyzeMove(/*Step 5*/);				// Checks to see if the state we land in is one we recognize
+			this.analyzeMove(/*Step 5*/);				// Checks to see if the state we land in is one we recognize
 			
-			//this is in analyzeMove in calls addToTransitionTable();
-				// Hey if not seen this pattern before, I need to be added to the transition table.
-				// Uses the last State in the currentPath();
-				// this.addToTransitionTable();
-			
+			// Hey if not seen this pattern before, I need to be added to the transition table.
+			// Uses the last State in the currentPath();
+			// this.addToTransitionTable();
 			
 			// step 6
-			if(patternHasBeenSeen){
-				//Move by conjecture Path
-				//this.moveToEnd();
-				//this.addCurrentPathToEpisodic();
-			}
-			else{
-				//Move Random
-				this.moveRandom(); 	// analysis will be returned from analyzeMove()
-			}
+			//this.moveRandom( /*boolean analysis */); 	// analysis will be returned from analyzeMove()
 			
-			
-			// need to update the transition table by saying where the move you made got you. 
-			
-			// need to update currentPath to episodic memory
+			// step 7 == step 5 ish
+			//this.testConjecture();
 		}		
 		// step 8 b loop
 		// step 9 beq 
