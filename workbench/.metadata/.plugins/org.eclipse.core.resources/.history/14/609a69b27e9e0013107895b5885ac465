@@ -112,7 +112,7 @@ public class smartAgent extends Agent{
 		}while(transitionTable.get(next)[index].get() != UNKNOWN_TRANSITION);
 		//At this point we now know what move to make. Thee nextMove
 		
-		//This is where we actually move
+		
 		sensor = this.env.tick(nextMove);	//updates sensor
 		int encodedSensorValue = encodeSensors(sensor);
 		currentPath.add(new Episode(nextMove, encodedSensorValue, ++numStates));  //This copies the move into currentPath "memory"
@@ -155,7 +155,7 @@ public class smartAgent extends Agent{
 	}
 	
 	//
-	public ConjecturePathReturn analyzeMove(){
+	public boolean analyzeMove(){
 		ArrayList<Integer> indexList = new ArrayList<Integer>();
 		ArrayList<Episode> conjecturePath = new ArrayList<Episode>();
 		Episode currentState = currentPath.get(currentPath.size()-1);
@@ -169,9 +169,7 @@ public class smartAgent extends Agent{
 		else{
 			
 			// This happens if we have never seen this pattern before!!!!!!!!!!!
-			// returning a class/ an object that holds a boolean.....................
-			ConjecturePathReturn conjecturePathReturn = new ConjecturePathReturn(null, false);
-			return conjecturePathReturn;
+			return false;
 		}
 		//we have now updated our state and now we can call our second check episode thing
 		
@@ -235,13 +233,11 @@ public class smartAgent extends Agent{
 		
 		//FOR TESTING
 		if(indexList.get(indexList.size() -1) > -1 ){
-			ConjecturePathReturn conjecturePathReturn = new ConjecturePathReturn(conjecturePath, true);
-			return conjecturePathReturn;
+			return true;
 		}
 		
 		//update transition table.... probably
-		ConjecturePathReturn conjecturePathReturn = new ConjecturePathReturn(null, false);
-		return conjecturePathReturn;
+		return false;
 	}
 	
 	
@@ -389,47 +385,12 @@ public class smartAgent extends Agent{
 		
 	}
 	
-	/**
-	 * 
-	 * @param conjecturePathReturn
-	 */
-	public void moveToEnd(ConjecturePathReturn conjecturePathReturn){
-		
-		//this will update the one spot in the trans table that needs to have a path added to it.
-		int indexOfRow = currentPath.get(currentPath.size()-2).stateID.get();
-		int indexOfChar = findIndex(currentPath.get(currentPath.size()-1).command);
-		transitionTable.get(indexOfRow)[indexOfChar] = currentPath.get(currentPath.size()-1).stateID;
-		
-		// At this point we have added the path from the findNextOpenState() to the state that we
-		// just conjectured was the same as another. 
-		
-		// This adds the path from the conjectured same state, to the Goal, to the currentPath();
-		ArrayList<Episode> pathToEnd = conjecturePathReturn.getConjecturePath();
-		for(Episode episode : pathToEnd ){
-			currentPath.add(episode);
-		}
-	}
 	
-	/**
-	 * 
-	 */
-	public void addCurrentPathToEpisodic(){
-		for(Episode episode : currentPath ){
-			episodicMemory.add(episode);
-		}
-	}
-	
-	
-	/**
-	 * 
-	 */
-	public void addPathToTransTable(){
-		// if the path that we are adding to the trans table is known
-		// just update in one spot.
-		
+	public void moveToEnd(){
 		
 		
 	}
+	
 	
 	/**
 	 * 
@@ -462,7 +423,7 @@ public class smartAgent extends Agent{
 			this.makeMove(next);						// makes the move from the found open state
 			
 			// step 4
-			ConjecturePathReturn conjecturePathReturn = this.analyzeMove(/*Step 5*/);				// Checks to see if the state we land in is one we recognize
+			boolean patternHasBeenSeen = this.analyzeMove(/*Step 5*/);				// Checks to see if the state we land in is one we recognize
 			
 			//this is in analyzeMove in calls addToTransitionTable();
 				// Hey if not seen this pattern before, I need to be added to the transition table.
@@ -471,22 +432,20 @@ public class smartAgent extends Agent{
 			
 			
 			// step 6
-			if(conjecturePathReturn.getReturnValue()){
+			if(patternHasBeenSeen){
 				//Move by conjecture Path
-				this.moveToEnd(conjecturePathReturn);
-				this.addCurrentPathToEpisodic();
+				//this.moveToEnd();
+				//this.addCurrentPathToEpisodic();
 			}
 			else{
-				// Move Random
-				this.moveRandom();
-				// Need to update the transition table by saying where the move you made got you. 
-				this.addPathToTransTable();
+				//Move Random
+				this.moveRandom(); 	// analysis will be returned from analyzeMove()
 			}
 			
 			
 			// need to update the transition table by saying where the move you made got you. 
-			//this.addPathToTransTable();
 			
+			// need to update currentPath to episodic memory
 		}		
 		// step 8 b loop
 		// step 9 beq 

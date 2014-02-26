@@ -477,9 +477,9 @@ public class smartAgent extends Agent{
 				this.addCurrentPathToEpisodic();
 			}
 			else{
-				// Move Random
-				this.moveRandom();
-				// Need to update the transition table by saying where the move you made got you. 
+				//Move Random
+				this.moveRandom(); 	// analysis will be returned from analyzeMove()
+				// need to update the transition table by saying where the move you made got you. 
 				this.addPathToTransTable();
 			}
 			
