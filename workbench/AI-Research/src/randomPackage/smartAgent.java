@@ -4,9 +4,11 @@ import java.util.*;
 
 public class smartAgent extends Agent{
 	
-	//Variables
+	//Constants
 	protected int UNKNOWN_TRANSITION = -1;
 	protected int UNKNOWN_STATE = -1;
+	
+	//Instance Varibales
 	
 	// An ArrayList of arrays that are length 2 to allow us to store which states we think are equal
 	protected ArrayList<StateID[]> equivStates = new ArrayList<StateID[]>();
@@ -15,48 +17,53 @@ public class smartAgent extends Agent{
 	protected ArrayList<StateID[]> diffStates = new ArrayList<StateID[]>();
 	
 	// Holds the Agents current transition table (what it thinks the transition table is)
-	//***************** THIS NEEDS TO CHANGE TO AN ArrayList<StateID[]> transitionTable ***************************
-	protected ArrayList<StateID[]> transitionTable;				// we can know the length of alphabet but don't know how many states there are going to be
+	protected ArrayList<StateID[]> transitionTable;	
 	
 	// Which state the agent thinks it is in currently
 	protected int currentState;
-	
-	// A list of episodes that the agent thinks it can take to get to the goal state.
-	//protected ArrayList<Episode> currentPlan = null; //?????????????????????????????????????????????????????
-	
-	// Which two states the Agent is conjecturing are equal.
-	// private int[] currentHypothesis = new int[2];
-	
-	// Does the current state we are in have a path that we have not tried yet? 
-	// protected boolean hasBestPath = false;z
 	
 	// Keeps the agents current path that it is taking
 	protected ArrayList<Episode> currentPath = new ArrayList<Episode>();
 	
 	
+	/**
+	 * Constructor
+	 * 
+	 * Calls the super-class constructor and initializes the current state and the transition
+	 * table
+	 */
 	public smartAgent(){
 		super();
 		transitionTable = new ArrayList<StateID[]>();
 		currentState = 0;
 	}
 	
+	/**
+	 * Constructor
+	 *
+	 * Overloaded constructor used for testing. 
+	 *
+	 * @param environment - A fixed SME
+	 */
 	public smartAgent(StateMachineEnvironment environment){
 		super(environment);
 		transitionTable = new ArrayList<StateID[]>();
 		currentState = 0;
 	}
 	
-	/*
+	/**
 	 * findNextOpenState()
-	 * finds the next state in the transition table that has a move
-	 * that hasn't been made yet. 
+	 * 
+	 * Finds the next state in the transition table that has an unknown transition.
+	 *
+	 * @param void
+	 * @return int - The state that has an unknown transition
+	 * 
 	 */
 	public int findNextOpenState(){
-		//Look through it to find the next open STATE (not next move from that state)
 		for(int i = 0; i < transitionTable.size();  ++i){
 			for(int j = 0; j< transitionTable.get(i).length; ++j){
 				if(transitionTable.get(i)[j].get() == UNKNOWN_TRANSITION){
-					//return transitionTable.get(i);
 					return i;
 				}
 			}
@@ -64,65 +71,70 @@ public class smartAgent extends Agent{
 		return UNKNOWN_STATE;
 	}
 	
-	/*
-	 * addRow()
-	 *
-	 */
-	public void addRow(/*?????*/){
-		
-	}
-	
-	
-	/*
+	/**
 	 * initTransTable()
-	 * initializes the transition table based on the original random path.
+	 * 
+	 * Initializes the transition table.
+	 *
+	 * @param void
+	 * @return void
 	 */
 	public void initTransTable(){
-		//int rowCount = 0;
 		//Makes transition table out of the random path
 		for(int i = 1; i< episodicMemory.size(); ++i){
 			Episode next = episodicMemory.get(i);
 			char command = next.command;
 			int index = findIndex(command);  // finds which index the letter corresponds to.
+			
 			//now we have index of the command
-			//we also have the state ID of the state.
 			int state = next.stateID.get();
 			StateID[] myTableEntry = new StateID[alphabet.length];
 			
-			//Used to init the array to UNKNOWN_TRANSITION to start 
+			//init new row for table as all unknown transitions
 			for(int j = 0; j<myTableEntry.length; ++j){
 				myTableEntry[j] = new StateID(UNKNOWN_TRANSITION);
 			}
+			//add the known transition to the row
 			myTableEntry[index].set(state);
 			transitionTable.add(myTableEntry);
 		}
 	}
 	
-	
-	/*
-	 * makeMove(int next)
-	 * given a state, makes a move, from that state that has not been tried before
+	/**
+	 * makeMove()
+	 * 
+	 * Allows agent to make a move.
+	 *
+	 * @param next - The State from which to make a move
+	 * @return void
+	 *
 	 */
 	public void makeMove(int next){
 		char nextMove;
 		int index;
+		//find move to make 
 		do{
 			nextMove = randomChar(alphabet.length);
 			index = findIndex(nextMove);
 		}while(transitionTable.get(next)[index].get() != UNKNOWN_TRANSITION);
-		//At this point we now know what move to make. Thee nextMove
 		
-		//This is where we actually move
-		sensor = this.env.tick(nextMove);	//updates sensor
+		//make move
+		sensor = this.env.tick(nextMove);	
 		int encodedSensorValue = encodeSensors(sensor);
-		currentPath.add(new Episode(nextMove, encodedSensorValue, ++numStates));  //This copies the move into currentPath "memory"
+		
+		//add the move to the current path
+		currentPath.add(new Episode(nextMove, encodedSensorValue, ++numStates)); 
 	}
 	
-	
-	
-	/*
-	 * findIndex(char command)
-	 * maps char in alphabet to a location 
+	/**
+	 * findIndex()
+	 * 
+	 * Maps char in alphabet to an index
+	 *
+	 * @param command - Letter from the alphabet
+	 * @return int - Index of the letter given --OR-- '-1' if the letter is 
+	 *				 not in the alphabet
+	 * 
 	 */
 	private int findIndex(char command){
 		int index = UNKNOWN_TRANSITION;
@@ -135,13 +147,15 @@ public class smartAgent extends Agent{
 		return index;
 	}
 	
-	
-	
-	/*
+	/**
 	 * isTransitionTableFull()
-	 * this is used to see if there are any unknown transitions in the table
+	 *
+	 * This is used to see if there are any unknown transitions in the table
 	 * used for conjecturing and filling out the table.
 	 * argument to the while loop.
+	 *
+	 * @param void
+	 * @return boolean - true if the table is full --OR-- false if the table is not
 	 */
 	public boolean isTransitionTableFull(){
 		for(StateID[] x : transitionTable){
@@ -154,29 +168,33 @@ public class smartAgent extends Agent{
 		return true;
 	}
 	
-	//
+	/**
+	 * analyzeMove()
+	 * 
+	 * TODO: Add Method Header and cleanup/seperate into methods
+	 *
+	 * @param void
+	 * @return ListAndBool - An object that holds a boolean value and a list of episodes
+	 *
+	 */
 	public ListAndBool analyzeMove(){
 		ArrayList<Integer> indexList = new ArrayList<Integer>();
 		ArrayList<Episode> conjecturePath = new ArrayList<Episode>();
 		Episode currentState = currentPath.get(currentPath.size()-1);
 		int currentMatchedPathLength = 0;
 		
+		//Find all indeces in episodic memory of matching episodes
 		indexList = checkIfEpisodeOccured(currentState);
+		
 		if(indexList.size() > 0){
 			currentMatchedPathLength++;
 			currentState = currentPath.get(currentPath.size()-(currentMatchedPathLength));
 		}
 		else{
-			
-			// This happens if we have never seen this pattern before!!!!!!!!!!!
-			// returning a class/ an object that holds a boolean.....................
-			//return false;
-			//ConjecturePathReturn conjecturePathReturn = new ConjecturePathReturn(null, false);
-			//return conjecturePathReturn;
 			ListAndBool ListOfNewEpisodes = new ListAndBool(null,false);
 			return ListOfNewEpisodes;
 		}
-		//we have now updated our state and now we can call our second check episode thing
+		//We have now updated our current state, Now we can expand the search to find the most likely matching state
 		
 		ArrayList<Integer> indexListTemp = new ArrayList<Integer>();
 		
@@ -192,24 +210,20 @@ public class smartAgent extends Agent{
 			
 			indexList = checkIfEpisodeOccured(decrementArrayList(indexList,currentMatchedPathLength), currentState);
 			
-			
-			
 			if(indexList.size() > 0){
 				currentMatchedPathLength++;
 				currentState = currentPath.get(currentPath.size()-(currentMatchedPathLength+1));
 			}
 		}
-		
-		//what Happens if it cannot find just one match to the path? 
-		//it will use the most recent one. 
-		
-		
-		
+		//Failsafe, if there were no 'longer' matches in memory
 		if(!(indexList.size() > 0)){
 			indexList = indexListTemp;
 		}
+		
+		//get the last index from the list
 		int index = indexList.size()-1;
-		//call build Conjecture path on the last index of indexlist (this will always call the last one)
+		
+		//build a path from the state found in memory to the goal
 		conjecturePath = buildConjecturePath(indexList.get(index));
 		
 		//test the conjectured Path
@@ -217,14 +231,14 @@ public class smartAgent extends Agent{
 		boolean theyAreTheSame = newEpisodePathList.getReturnValue();
 		
 		if(theyAreTheSame){
-			//add these to the sameStates Table thingy.....yyyyyyyyyyyy
+			//add to the equivStates table
 			StateID[] same = new StateID[2];
 			same[0] = currentState.stateID;
 			same[1] = episodicMemory.get(indexList.get(index)).stateID;
 			equivStates.add(same);
 		}
 		else{
-			//add these to the not sateStates table thingy....yyyyyyyyyyy
+			//add to the diffStates table
 			StateID[] diff = new StateID[2];
 			diff[0] = currentState.stateID;
 			diff[1] = episodicMemory.get(indexList.get(index)).stateID;
@@ -232,54 +246,47 @@ public class smartAgent extends Agent{
 		}
 		
 		
-		//Now we know if the two states are the same or different.
-		//We now need to update the transition table. 
+		//given same or different states, update the transistion table
 		modifyTransitionTable();
 		
 		
-		//FOR TESTING
+		//Not necessarily for testing anymore
 		if(indexList.get(indexList.size() -1) > -1 ){
 			boolean foundMatch = true;
 			ListAndBool ListOfNewEpisodes = new ListAndBool(newEpisodePathList.getConjecturePath(),foundMatch);
-			//ConjecturePathReturn conjecturePathReturn = new ConjecturePathReturn(conjecturePath, true);
-			//return conjecturePathReturn;
 			return ListOfNewEpisodes;
-			//return foundMatch;
 		}
-		
-		//update transition table.... probably
-		boolean foundMatch = false;
-		ListAndBool ListOfNewEpisodes = new ListAndBool(newEpisodePathList.getConjecturePath(),foundMatch);
-		//ConjecturePathReturn conjecturePathReturn = new ConjecturePathReturn(null, false);
-		//return conjecturePathReturn;
-		return ListOfNewEpisodes;
-		//return foundMatch;
+		else {
+			boolean foundMatch = false;
+			ListAndBool ListOfNewEpisodes = new ListAndBool(newEpisodePathList.getConjecturePath(),foundMatch);
+			return ListOfNewEpisodes;
+		}
 	}
 	
-	
-	//New 2/13/14
-	//This method will update the transition table for as long as there are same states
 	/**
 	 * modifyTransitionTable()
-	 * This sets the states equal to each other or calls adds it to transition table.
+	 *
+	 * Merges two equiv states --OR-- adds a new diff state to the table
+	 *
+	 * @param void
+	 * @return void
 	 */
 	public void modifyTransitionTable(){
 		
 		// Sanity check 
 		if(equivStates.size() <= 0 && diffStates.size() <=0){
-			return;  // If this happens SOMETHING IS BROKEN!!!!!!!!!!
+			return;  //Should not reach this statement.
 		}
+		
 		if(equivStates.size() > 0){
-			// Spot 0 in equivStates holds CurrentState
-			// Spot 1 in equivStates holds the state it is equal to
+			//equivStates holds CurrentState([0]) and state it is equal to([1])
 			equivStates.get(0)[1] = equivStates.get(0)[0];
-			//This is so this number for the "different state" is not used in the trans table.
-			//The index is then "thrown out" since the state doesn't exist but the counter of states
-			//is not reset or decremented if two states are equal. (continued count)
+			
+			//add a null row to the table to account for a state that no longer exists
 			transitionTable.add(null); 
 		}
+		
 		if(diffStates.size() > 0){
-			// call addToTransitionTable()
 			addToTransitionTable();
 		}
 		
@@ -288,33 +295,36 @@ public class smartAgent extends Agent{
 		
 	}
 	
-	
 	/**
 	 * addToTransitionTable()
+	 *
+	 * Adds a row of unknown transitions to the transition table to hold the place of a 
+	 * newly discovered diff state
+	 *
+	 * @param void
+	 * @return void
+	 *
 	 */
 	public void addToTransitionTable(){
-		
-		// We do not need to know the stateID of the diff state because we are assuming
-		// that up to this point we have the correct number of rows either null or not that 
-		// corresponds to numstates and thus by adding to the end of the transition Table
-		// it corresponds to the StateID of the diff state. 
 		StateID[] newState = new StateID[alphabet.length];
 		for(int j = 0; j<newState.length; ++j){
 			newState[j] = new StateID(UNKNOWN_TRANSITION);
 		}
 		transitionTable.add(newState);
 		
-		//sets diffStates back to length 0.
 		diffStates.remove(0);
 	}
 	
-	
-	
 	/**
-	 * 
-	 * @param list
-	 * @param decrementAmount
-	 * @return
+	 * decrementArrayList() 
+	 *
+	 * Given an arrayList of integers, decrements all values by a given ammount
+	 *
+	 * @param list - arrayList to decrement
+	 * @param decrementAmount - ammount to decrement the values in the list
+	 * @return ArrayList<Integer> - The decremented arrayList
+	 *
+	 *
 	 */
 	public ArrayList<Integer> decrementArrayList(ArrayList<Integer> list, int decrementAmount){
 		ArrayList<Integer> temp = new ArrayList<Integer>();
@@ -325,23 +335,35 @@ public class smartAgent extends Agent{
 		return temp;
 	}
 	
-	
-	
-	//
+	/**
+	 * checkIfEpisodeOccured()
+	 *
+	 * Given a list of episodes and an episode to check for, runs through the list
+	 * searching for the episode
+	 *
+	 * @param indexList - List of episodes to search
+	 * @param episode - Episode to search for
+	 * @return ArrayList<Integer> - List of all indeces where the episode was found 
+	 *
+	 */
 	public ArrayList<Integer> checkIfEpisodeOccured(ArrayList<Integer> indexList, Episode episode){
 		ArrayList<Integer> tempList = new ArrayList<Integer>();
 		for(int i = 0; i < indexList.size(); ++i){
 			if(episode.equals(episodicMemory.get(indexList.get(i)))){
-				tempList.add(indexList.get(i));									// this adds the index in episodic memory held in indexList
+				tempList.add(indexList.get(i));	
 			}
 		}
 		return tempList;
 	}
 	
-	
-	/*
-	 * this is the initial check to see if this state has ever been seen before
-	 * in episodicMemory
+	/** 
+	 * checkIfEpisodeOccurred()
+	 *
+	 * Overloaded: Given an episode, searches episodicMemory for matching episodes
+	 *
+	 * @param episode - Episode to search for in memory
+	 * @return ArrayList<Integer> - List of indeces in episodic memory 
+	 *	                            where a matching episode was found
 	 */
 	public ArrayList<Integer> checkIfEpisodeOccured(Episode episode){
 		ArrayList<Integer> indexList = new ArrayList<Integer>();
@@ -354,27 +376,29 @@ public class smartAgent extends Agent{
 	}
 	
 	/**
+	 * buildConjecture Path()
+	 *
+	 * Builds a path from the episode at the given index in memory to the goal
 	 * 
-	 * @param index
-	 * @return
+	 * @param index - Index in memory from which to start the path
+	 * @return ArrayList<Episode> - the path that was found
+	 *
 	 */
-	// Builds Path from conjectured same state to goal.
 	public ArrayList<Episode> buildConjecturePath(int index){
-		
 		ArrayList<Episode> conjecturePath = new ArrayList<Episode>();
 		while(episodicMemory.get(index).sensorValue != MYSTERY_AND_GOAL_ON){
 			conjecturePath.add(new Episode(episodicMemory.get(index)));
 			++index;
 		}
-		//workaround for now add the final state to the conjecture path
+		
+		//add final state that takes the agent to the goal
 		conjecturePath.add(new Episode(episodicMemory.get(index)));
 				
 		return conjecturePath;
 	}
 	
-	
-	
 	/**
+	 * TODO: FIX METHOD HEADER
 	 * testConjecture(ArrayList<Episode> conjecturePath)
 	 * 		This tests from the conjectured state that we are CURRENTLY IN (call it i), and makes moves
 	 * 		from the State that it is conjectured to be, to the end, starting with the Episode after the 
@@ -393,7 +417,7 @@ public class smartAgent extends Agent{
 	public ListAndBool testConjecture(ArrayList<Episode> conjecturePath){
 		int tempStateNum = numStates;
 		ArrayList<Episode> tempPath = new ArrayList<Episode>();
-		boolean returnValue = true; //Assumption is that the states are the same by default. (randomly picked a value)
+		boolean returnValue = true; 
 		boolean[] tempSensor = new boolean[2];
 		
 		for(Episode episode: conjecturePath) {
@@ -402,11 +426,11 @@ public class smartAgent extends Agent{
 			tempPath.add(new Episode(episode.command, encodedSensorValue, ++tempStateNum));
 			if( !(encodedSensorValue == episode.sensorValue)){
 				returnValue = false;
-				break; 	//if at any point we make a move and something no match break(run away). 
+				break; 	//if at any point a move is made and something doesn't match, break. 
 			}
 		}
 		
-		//If they are the same state. set tempPath = to ConjecturePath
+		//If they are the same state, set tempPath equal to ConjecturePath
 		if(returnValue){
 			tempPath = conjecturePath;
 		}
@@ -414,10 +438,7 @@ public class smartAgent extends Agent{
 			numStates = tempStateNum;
 		}
 		
-		
 		// Add all the stuff in tempPath to the currentPath. 
-		// (NOTE!!!!! :::: These moves have been made!!! ACTUALLY!!! IN THE WORLD TYPE MADE!!!!!!) 
-		// (like don't fuck with this)
 		for(Episode episode : tempPath){
 			currentPath.add(episode);
 		}
@@ -428,10 +449,14 @@ public class smartAgent extends Agent{
 		return NewEpisodePathList; 
 	}
 	
-	
 	/**
 	 * printTransTable()
-	 * This method prints out the smartAgents version of the Transition Table
+	 *
+	 * This method prints out the smartAgent's version of the Transition Table
+	 *
+	 * @param void
+	 * @return void
+	 *
 	 */
 	public void printTransTable(){
 		for(int i = 0;  i < transitionTable.size();  ++i){
@@ -440,7 +465,6 @@ public class smartAgent extends Agent{
 			}
 			System.out.println("");
 		}
-		
 	}
 	
 	/**
