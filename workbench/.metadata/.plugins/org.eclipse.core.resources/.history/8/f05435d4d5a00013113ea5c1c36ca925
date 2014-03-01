@@ -87,12 +87,6 @@ public class RandomAgent extends Agent{
 
 		tester2.printTransTable();
 		
-		//********************************************************8
-		
-		StateMachineEnvironment testEnv9000 = new StateMachineEnvironment(5,3);
-		smartAgent realTest = new smartAgent(testEnv9000);
-		realTest.run();
-		
 	}
 	
 }

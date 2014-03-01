@@ -509,7 +509,7 @@ public class smartAgent extends Agent{
 		
 		//adds the rows needed for the transition Table
 		
-		if(listOfNewEpisodes == null){System.out.println("listOfNewEpisodes is NULL, line 512.");}
+		if(listOfNewEpisodes == null){System.out.println("listOfNewEpisodes is NULL, line 512.");
 		
 		for(int i = 0; i < listOfNewEpisodes.getConjecturePath().size(); ++i){
 			StateID[] newState = new StateID[alphabet.length];

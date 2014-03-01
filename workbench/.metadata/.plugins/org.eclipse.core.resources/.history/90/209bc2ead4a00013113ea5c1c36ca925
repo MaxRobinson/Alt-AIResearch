@@ -313,6 +313,7 @@ public class smartAgent extends Agent{
 			newState[j] = new StateID(UNKNOWN_TRANSITION);
 		}
 		transitionTable.add(newState);
+
 	}
 	
 	/**
@@ -480,7 +481,8 @@ public class smartAgent extends Agent{
 		
 		// At this point we have added the path to the transition table from the findNextOpenState() to the state that we
 		// just conjectured was the same as another. 
-	
+		
+		
 	}
 	
 	/**
@@ -509,9 +511,7 @@ public class smartAgent extends Agent{
 		
 		//adds the rows needed for the transition Table
 		
-		if(listOfNewEpisodes == null){System.out.println("listOfNewEpisodes is NULL, line 512.");}
-		
-		for(int i = 0; i < listOfNewEpisodes.getConjecturePath().size(); ++i){
+		for(Episode episode : listOfNewEpisodes.getConjecturePath()){
 			StateID[] newState = new StateID[alphabet.length];
 			for(int j = 0; j<newState.length; ++j){
 				newState[j] = new StateID(UNKNOWN_TRANSITION);

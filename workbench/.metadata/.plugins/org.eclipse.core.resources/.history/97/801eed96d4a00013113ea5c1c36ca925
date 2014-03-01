@@ -53,7 +53,7 @@ public class RandomAgent extends Agent{
 		tester.episodicMemory = testMem;
 		tester.currentPath = testCurrent;
 		
-		if(tester.analyzeMove().getReturnValue()){
+		if(tester.analyzeMove()){
 			System.out.println("SUCCESS!!!!");
 		}
 		
@@ -79,19 +79,13 @@ public class RandomAgent extends Agent{
 		tester2.episodicMemory = testMem2;
 		tester2.currentPath = testCurrent2;
 		
-		if(tester2.analyzeMove().getReturnValue()){
+		if(tester2.analyzeMove()){
 			System.out.println("SUCCESS!!!!");
 		}
 		
 		tester2.initTransTable();
 
 		tester2.printTransTable();
-		
-		//********************************************************8
-		
-		StateMachineEnvironment testEnv9000 = new StateMachineEnvironment(5,3);
-		smartAgent realTest = new smartAgent(testEnv9000);
-		realTest.run();
 		
 	}
 	

@@ -9,12 +9,7 @@ public class ListAndBool {
 	
 	//constructor
 	ListAndBool(ArrayList<Episode> conjecturePath, boolean returnValue ){
-		if(conjecturePath == null){
-			this.conjecturePath = null;
-		}
-		else{
-			this.conjecturePath = new ArrayList<Episode>(conjecturePath);
-		}
+		this.conjecturePath = new ArrayList<Episode>(conjecturePath); 
 		this.returnValue = returnValue;
 	}
 	
