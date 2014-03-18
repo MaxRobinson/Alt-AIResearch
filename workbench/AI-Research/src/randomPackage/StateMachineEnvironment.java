@@ -32,8 +32,8 @@ public class StateMachineEnvironment {
 	private static final int IS_NEW_STATE = 0;
 	private static final int IS_GOAL = 1;
 
-    
-	private int[][] transition; //transition table
+    //changing transition table to be public
+	public int[][] transition; //transition table
 	private char[] alphabet;
 	private String[] paths;  //shortest path from each state to goal
 	public int currentState;
@@ -278,7 +278,8 @@ public class StateMachineEnvironment {
 	 * A helper method that generates the shortest path to the goal from each
 	 * state using Dijkstra's algorithm
 	 */
-	private void findShortestPaths() {
+	//make public for now
+	public void findShortestPaths() {
 
         initPaths();
         

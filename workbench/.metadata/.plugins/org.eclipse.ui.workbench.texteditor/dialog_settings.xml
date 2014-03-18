@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="isTransitionTableFull" key="selection"/>
+		<item value="init" key="selection"/>
 		<list key="findhistory">
-			<item value="isTransitionTableFull"/>
-			<item value="this.addPathToTransTable();"/>
-			<item value="moveToEnd"/>
-			<item value="addCurrentPathToEpisodic"/>
-			<item value="analyzeMove"/>
-			<item value="modifyTransitionTable"/>
-			<item value="checkIfEpisodeOccured"/>
-			<item value="testConjecture"/>
+			<item value="init"/>
+			<item value="ListAndBool"/>
+			<item value="path"/>
+			<item value="numStates"/>
+			<item value="numstates"/>
+			<item value="numState"/>
+			<item value="++numState"/>
+			<item value="++numStates"/>
 		</list>
 		<list key="replacehistory">
 		</list>
