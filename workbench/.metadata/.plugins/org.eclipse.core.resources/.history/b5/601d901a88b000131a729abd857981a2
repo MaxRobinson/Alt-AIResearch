@@ -423,12 +423,11 @@ public class smartAgent extends Agent{
 			conjecturePath.add(new Episode(episodicMemory.get(index)));
 			++index;
 		}
-		
-		
-		//--index;
+	
+		--index;	
 		//add final state that takes the agent to the goal
 		conjecturePath.add(new Episode(episodicMemory.get(index)));
-
+				
 		return conjecturePath;
 	}
 	
@@ -515,7 +514,7 @@ public class smartAgent extends Agent{
 		//	item which is 1 previous to the end. 
 		int indexOfRow = currentPath.get(currentPath.size()-2).stateID.get();
 		int indexOfChar = findIndex(currentPath.get(currentPath.size()-1).command);
-		if(transitionTable.get(indexOfRow) != null){
+		if(transitionTable.size() > indexOfRow && transitionTable.get(indexOfRow) != null){
 			transitionTable.get(indexOfRow)[indexOfChar] = currentPath.get(currentPath.size()-1).stateID;
 		}
 		else{

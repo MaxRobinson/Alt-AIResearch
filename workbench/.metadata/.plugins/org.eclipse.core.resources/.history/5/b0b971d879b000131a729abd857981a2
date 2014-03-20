@@ -72,15 +72,15 @@ public abstract class Agent {
 		
 		int length = this.alphabet.length;  // # char in alpha
 		char letter;
-		//numStates++;  //starting at 2 because this is the next state in the memory for the episodes 
+		numStates++;  //starting at 2 because this is the next state in the memory for the episodes 
 		
 		do{
-			numStates++;
 			letter = randomChar(length);
 			sensor = this.env.tick(letter);	//updates sensor
 			//encode sensors to make into an episode to store in memory
 			int encodedSensorValue = encodeSensors(sensor);
 			episodicMemory.add(new Episode(letter, encodedSensorValue, numStates));
+			numStates++;
 			
 		}while(!sensor[IS_GOAL]);
 	}

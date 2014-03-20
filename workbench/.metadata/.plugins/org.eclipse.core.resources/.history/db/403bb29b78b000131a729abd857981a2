@@ -37,7 +37,7 @@ public class RandomAgent extends Agent{
 		test2.printPath();*/
 		
 		
-		/*//TEST 1
+		//TEST 1
 		smartAgent tester = new smartAgent();
 		
 		//this is going to be used to test the path matching algorithm
@@ -86,7 +86,6 @@ public class RandomAgent extends Agent{
 		tester2.initTransTable();
 
 		tester2.printTransTable();
-		*/
 		
 		//********************************************************
 		

@@ -37,7 +37,7 @@ public class RandomAgent extends Agent{
 		test2.printPath();*/
 		
 		
-		/*//TEST 1
+		//TEST 1
 		smartAgent tester = new smartAgent();
 		
 		//this is going to be used to test the path matching algorithm
@@ -86,7 +86,8 @@ public class RandomAgent extends Agent{
 		tester2.initTransTable();
 
 		tester2.printTransTable();
-		*/
+		
+		System.out.println(tester2.numStates);
 		
 		//********************************************************
 		
@@ -94,7 +95,7 @@ public class RandomAgent extends Agent{
 		//testEnv9000.printStateMachine();
 		
 		
-		StateMachineEnvironment testEnvStatic = new StateMachineEnvironment(5,3);
+		/*StateMachineEnvironment testEnvStatic = new StateMachineEnvironment(5,3);
 		testEnvStatic.transition[0][0] = 0;
 		testEnvStatic.transition[0][1] = 2;
 		testEnvStatic.transition[0][2] = 0;
@@ -115,7 +116,7 @@ public class RandomAgent extends Agent{
 		testEnvStatic.printStateMachine();
 		
 		smartAgent realTest = new smartAgent(testEnvStatic);
-		realTest.run();
+		realTest.run();*/
 		
 	}
 	

@@ -224,12 +224,12 @@ public class smartAgent extends Agent{
 		boolean breakFlag = false;
 		
 		while(indexList.size() > 0){
-			System.out.println(indexList.get(0)); ///THIS IS FOR TESTING!!!!! TAKE ME OUT TO THE BALL PARK>>>>.......!!!!
+			//System.out.println(indexList.get(0)); ///THIS IS FOR TESTING!!!!! TAKE ME OUT TO THE BALL PARK>>>>.......!!!!
 			if(indexList.size() == 1){
 				break;
 			}
 			
-			System.out.println(indexList.get(0));  //THIS IS FOR TESTING TAKE ME OUT!!!! Later of course
+			//System.out.println(indexList.get(0));  //THIS IS FOR TESTING TAKE ME OUT!!!! Later of course
 			
 			indexListTemp = indexList; 
 			
@@ -423,12 +423,11 @@ public class smartAgent extends Agent{
 			conjecturePath.add(new Episode(episodicMemory.get(index)));
 			++index;
 		}
-		
-		
-		//--index;
+	
+		--index;	
 		//add final state that takes the agent to the goal
 		conjecturePath.add(new Episode(episodicMemory.get(index)));
-
+				
 		return conjecturePath;
 	}
 	

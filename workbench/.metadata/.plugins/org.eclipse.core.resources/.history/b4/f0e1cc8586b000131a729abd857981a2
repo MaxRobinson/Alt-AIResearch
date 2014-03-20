@@ -283,7 +283,7 @@ public class smartAgent extends Agent{
 		modifyTransitionTable();
 		
 		
-		//Not necessarily for testing anymore  don't need if any more?? probs not.
+		//Not necessarily for testing anymore
 		if(indexList.get(indexList.size() -1) > -1 ){
 			boolean foundMatch = true;
 			ListAndBool ListOfNewEpisodes = new ListAndBool(newEpisodePathList.getConjecturePath(),foundMatch);
@@ -419,16 +419,14 @@ public class smartAgent extends Agent{
 	 */
 	public ArrayList<Episode> buildConjecturePath(int index){
 		ArrayList<Episode> conjecturePath = new ArrayList<Episode>();
-		while(episodicMemory.size() > index && episodicMemory.get(index).sensorValue != MYSTERY_AND_GOAL_ON){
+		while(episodicMemory.get(index).sensorValue != MYSTERY_AND_GOAL_ON){
 			conjecturePath.add(new Episode(episodicMemory.get(index)));
 			++index;
 		}
 		
-		
-		//--index;
 		//add final state that takes the agent to the goal
 		conjecturePath.add(new Episode(episodicMemory.get(index)));
-
+				
 		return conjecturePath;
 	}
 	
@@ -649,9 +647,7 @@ public class smartAgent extends Agent{
 				}
 				this.moveToEnd();
 				this.addCurrentPathToEpisodic();
-				
-				currentPath.clear();
-				
+
 			}
 			// need to update the transition table by saying where the move you made got you. 
 			//this.addPathToTransTable();
