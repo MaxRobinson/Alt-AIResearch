@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="init" key="selection"/>
+		<item value="findNextOpen" key="selection"/>
 		<list key="findhistory">
-			<item value="init"/>
-			<item value="ListAndBool"/>
-			<item value="path"/>
+			<item value="findNextOpen"/>
+			<item value="findNext"/>
+			<item value="system.out.print"/>
 			<item value="numStates"/>
-			<item value="numstates"/>
-			<item value="numState"/>
-			<item value="++numState"/>
 			<item value="++numStates"/>
+			<item value="++umStates"/>
+			<item value="numStates++"/>
+			<item value="init"/>
 		</list>
 		<list key="replacehistory">
 		</list>

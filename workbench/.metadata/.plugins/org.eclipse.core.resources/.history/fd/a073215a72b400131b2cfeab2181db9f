@@ -1,0 +1,14 @@
+package randomPackage;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class Test_TransitionTable {
+
+	@Test
+	public void testTransitionTable() {
+		fail("Not yet implemented");
+	}
+
+}

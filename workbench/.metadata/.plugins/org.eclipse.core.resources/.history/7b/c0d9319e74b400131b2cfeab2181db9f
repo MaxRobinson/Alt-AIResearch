@@ -1,0 +1,24 @@
+package randomPackage;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class Test_TransitionTable {
+
+	@Test
+	public void testTransitionTable() {
+		TransitionTable transitionTable = new TransitionTable();
+		assertNotNull("Make sure the Table is not Null", transitionTable);
+		assertTrue("Make sure that there is one null row at index 0.", transitionTable.table.get(0) == null && transitionTable.table.size() == 1);
+	}
+	
+	@Test
+	public void testAddNullRow(){
+		TransitionTable transitionTable = new TransitionTable();
+		transitionTable.addNullRow();
+		assertTrue("Make sure that there is a null row at index 1.", transitionTable.table.size() == 2);
+		
+	}
+	
+}

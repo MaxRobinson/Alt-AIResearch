@@ -170,3 +170,36 @@ Caused by: org.eclipse.core.runtime.AssertionFailedException: assertion failed:
 	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
 	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:135)
 	... 23 more
+
+!ENTRY org.eclipse.ui 2 2 2014-03-20 16:52:57.820
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
+!SESSION 2014-03-21 15:00:54.088 -----------------------------------------------
+eclipse.buildId=I20120608-1400
+java.version=1.7.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.android.ide.eclipse.ddms 4 0 2014-03-21 15:11:09.328
+!MESSAGE DDMS files not found: C:\Program Files (x86)\eclipse4.2\platform-tools\adb.exe C:\Program Files (x86)\eclipse4.2\tools\hprof-conv.exe C:\Program Files (x86)\eclipse4.2\tools\traceview.bat 
+
+!ENTRY org.eclipse.ui 2 2 2014-03-21 16:27:01.546
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
+!SESSION 2014-03-25 15:47:31.741 -----------------------------------------------
+eclipse.buildId=I20120608-1400
+java.version=1.7.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.ui 2 2 2014-03-25 15:54:42.638
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
+!SESSION 2014-03-25 15:56:19.349 -----------------------------------------------
+eclipse.buildId=I20120608-1400
+java.version=1.7.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.ui 2 2 2014-03-25 15:59:31.413
+!MESSAGE Invalid property category path: ValidationPropertiesPage (bundle: org.eclipse.wst.xml.ui, propertyPage: org.eclipse.wst.xml.ui.propertyPage.project.validation)
