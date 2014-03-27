@@ -19,9 +19,22 @@ public class Test_TransitionTable {
 	public void testTransitionTable() {
 		TransitionTable transitionTable = new TransitionTable();
 		assertNotNull("Make sure the Table is not Null", transitionTable);
-		assertTrue("Make sure that there is one null row at index 0.", transitionTable.table.get(0) == null && transitionTable.table.size() == 1);
+		boolean nullRowAtIndexZero = transitionTable.table.get(0) == null && transitionTable.table.size() == 1;
+		assertTrue("Make sure that there is one null row at index 0.", nullRowAtIndexZero);
+		
+		//Test non-default constructor
+		char[] alphabet = createAlphabet(5);
+		
+		transitionTable = new TransitionTable(alphabet);
+		assertNotNull("Make sure the Table is not Null", transitionTable);
+		nullRowAtIndexZero = transitionTable.table.get(0) == null && transitionTable.table.size() == 1;
+		assertTrue("Make sure that there is one null row at index 0.", nullRowAtIndexZero);
+		transitionTable.table.add(new StateID[alphabet.length]);
+		int maxIndex = transitionTable.table.size() -1;
+		boolean alphabetLengthCorrect = isCorrectLength(transitionTable.table.get(maxIndex),alphabet.length);
+		assertTrue("Make sure that the table's rows are the same length as the alphabet provided",alphabetLengthCorrect);
 	}
-	
+
 	/**
 	 * testAddNullRow()
 	 *
@@ -30,8 +43,9 @@ public class Test_TransitionTable {
 	 * Cases Tested:
 	 * 				- Ensure the size of the table increases by one when a null row is added
 	 * 
-	 * @Test
+	 * 
 	 */
+	@Test
 	public void testAddNullRow(){
 		TransitionTable transitionTable = new TransitionTable();
 		int sizeBeforeAdd = transitionTable.table.size();
@@ -50,8 +64,9 @@ public class Test_TransitionTable {
 	 *				- Ensure that all values in the new row are '-1' 
 	 * 				- Ensure that the length of the row is the same as the length of the alphabet
 	 *
-	 * @Test
+	 * 
 	 */
+	@Test
 	public void testAddEmptyRow(){
 		TransitionTable transitionTable = new TransitionTable();
 		
@@ -72,16 +87,21 @@ public class Test_TransitionTable {
 	 *
 	 * Test the functionality of adding a given row to the table 
 	 *
-	 * @Test
+	 * 
 	 */
+	@Test
 	public void testAddRow() {
-		TransitionTable transitionTable = new TransitionTable();
+		char[] alphabet = createAlphabet(5);
 		
-		int numRowsBeforeAdd = transitionTable.size();
+		TransitionTable transitionTable = new TransitionTable(alphabet);
 		
-		transitionTable.addRow(createRow(9000,transitionTable.alphabet.length));
+		int numRowsBeforeAdd = transitionTable.table.size();
 		
-		int numRowsAfterAdd = transitionTable.size();
+		StateID[] newRow = createRow(9000,transitionTable.alphabet.length);
+		
+		transitionTable.addRow(newRow);
+		
+		int numRowsAfterAdd = transitionTable.table.size();
 		
 		boolean numRowsCorrect = numRowsAfterAdd - 1 == numRowsBeforeAdd;
 		
@@ -97,10 +117,13 @@ public class Test_TransitionTable {
 	 *
 	 * Test the functionality of the method that checks whether or not a table is full
 	 * 
-	 * @Test
+	 * 
 	 */
+	@Test
 	public void testIsTransitionTableFull() {
-		TransitionTable transitionTable = new TransitionTable();
+		char[] alphabet = createAlphabet(5);
+		
+		TransitionTable transitionTable = new TransitionTable(alphabet);
 		
 		assertTrue("With no rows added the table should be full as there are no unknown transitions",transitionTable.table.size() == 1);
 		
@@ -135,7 +158,7 @@ public class Test_TransitionTable {
 	private boolean checkRowValues(StateID[] rowToValidate, StateID[] correctRow){
 		if(rowToValidate.length != correctRow.length) return false;
 		
-		for(int i = 0; i<row.length; ++i ){
+		for(int i = 0; i<rowToValidate.length; ++i ){
 			if(rowToValidate[i].get() != correctRow[i].get()){
 				return false;
 			}
@@ -175,7 +198,7 @@ public class Test_TransitionTable {
 	 *					 False if the row does not match the row at the given index
 	 */
 	public boolean checkRowPosition(TransitionTable table, StateID[] row, int rowIndex) {
-		return checkRowValues(table.get(rowIndex), row);
+		return checkRowValues(table.table.get(rowIndex), row);
 	}
 	
 	/**
@@ -190,7 +213,7 @@ public class Test_TransitionTable {
 	 * @return boolean - True if the table contains values --OR-- False if the table has only null entries
 	 */
 	public boolean doesTableContainValues(TransitionTable table) {
-		for(StateID[] row : table) {
+		for(StateID[] row : table.table) {
 			if(row != null) return true;
 		}
 		return false;
@@ -212,7 +235,7 @@ public class Test_TransitionTable {
 	public StateID[] createRow(int value, int length) {
 		StateID[] row = new StateID[length];
 		for(StateID stateId : row) {
-			stateID = new StateID(value);
+			stateId = new StateID(value);
 		}
 		return row;
 	}
@@ -227,7 +250,7 @@ public class Test_TransitionTable {
 	 * @return boolean - True if the table contains '-1' --OR-- False if the table has only 'other' entries
 	 */
 	public boolean containsUnknownTransitions(TransitionTable table) {
-		for(StateID[] row : table) {
+		for(StateID[] row : table.table) {
 			for(int i=0;row!=null && i<row.length;++i) {
 				if(row[i].get() == -1) {
 					return true;
@@ -235,5 +258,26 @@ public class Test_TransitionTable {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * createAlphabet()
+	 * 
+	 * Given a number of characters, create an array of that many characters
+	 * 
+	 * @param numchars - Number of characters to be placed in the alphabet
+	 * @return char[] - The alphabet created
+	 */
+	private char[] createAlphabet(int numChars) {
+		char[] wholeAlphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m',
+								'n','o','p','q','r','s','t','u','v','w','x','y','z'};
+		
+		char[] returnAlphabet = new char[numChars];
+		
+		for(int i=0;i<numChars;++i) {
+			returnAlphabet[i] = wholeAlphabet[i];
+		}
+		
+		return returnAlphabet;
 	}
 }

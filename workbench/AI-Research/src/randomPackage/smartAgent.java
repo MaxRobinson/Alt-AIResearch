@@ -419,15 +419,17 @@ public class smartAgent extends Agent{
 	 */
 	public ArrayList<Episode> buildConjecturePath(int index){
 		ArrayList<Episode> conjecturePath = new ArrayList<Episode>();
-		while(episodicMemory.size() > index && episodicMemory.get(index).sensorValue != MYSTERY_AND_GOAL_ON){
-			conjecturePath.add(new Episode(episodicMemory.get(index)));
-			++index;
+		int tempIndex = 0;
+		while(episodicMemory.size() > index+tempIndex && episodicMemory.get(index).sensorValue != MYSTERY_AND_GOAL_ON){
+			conjecturePath.add(new Episode(episodicMemory.get(index + tempIndex)));
+			tempIndex++;
 		}
 		
+		//We subtract one because of the way the loop will fail when index is too large
+		int finalIndex = index + tempIndex - 1; 
 		
-		//--index;
 		//add final state that takes the agent to the goal
-		conjecturePath.add(new Episode(episodicMemory.get(index)));
+		conjecturePath.add(new Episode(episodicMemory.get(finalIndex-1)));
 
 		return conjecturePath;
 	}
@@ -456,7 +458,7 @@ public class smartAgent extends Agent{
 		boolean[] tempSensor = new boolean[2];
 		
 		for(Episode episode: conjecturePath) {
-			tempSensor = this.env.tick(episode.command);
+			tempSensor = this.env.tick(episode.command);    //A move is made!!!!
 			int encodedSensorValue = this.encodeSensors(tempSensor);
 			tempPath.add(new Episode(episode.command, encodedSensorValue, ++tempStateNum));
 			if( !(encodedSensorValue == episode.sensorValue)){
@@ -475,6 +477,7 @@ public class smartAgent extends Agent{
 		
 		// Add all the stuff in tempPath to the currentPath. 
 		for(Episode episode : tempPath){
+			//TODO: MAY NOT HAVE THE LAST EPISODE IN THE PATH
 			currentPath.add(episode);
 		}
 		
@@ -515,7 +518,19 @@ public class smartAgent extends Agent{
 		//	item which is 1 previous to the end. 
 		int indexOfRow = currentPath.get(currentPath.size()-2).stateID.get();
 		int indexOfChar = findIndex(currentPath.get(currentPath.size()-1).command);
-		if(transitionTable.get(indexOfRow) != null){
+		
+		//DEBUGGING
+		boolean test1 = indexOfRow < transitionTable.size();
+		
+		if(test1) {
+			test1 = transitionTable.get(indexOfRow) != null;
+		}
+		else {
+			return;
+		}
+		//END DEBUGGING ADDITION
+		
+		if(test1){
 			transitionTable.get(indexOfRow)[indexOfChar] = currentPath.get(currentPath.size()-1).stateID;
 		}
 		else{
