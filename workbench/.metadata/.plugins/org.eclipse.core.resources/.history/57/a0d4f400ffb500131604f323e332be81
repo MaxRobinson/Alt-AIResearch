@@ -82,31 +82,20 @@ public class TransitionTable {
 	
 	/**
 	 * updateSingleTransition()
-	 * 
-	 * Given a source episode and a target episode this method will 
-	 * go to the row of the source stateID value and update, at the command
-	 * that was taken to get to the target, the value with the stateID of Target
-	 * 
 	 * @param source 
 	 * @param target
 	 * 
 	 * @return void
 	 */
-	public boolean updateSingleTransition(Episode source, Episode target){
-		int rowIndex = source.stateID.get(); //index of row in transitionTable to update;
+	public void updateSingleTransition(Episode source, Episode target){
+		int rowIndex = source.stateID.get(); //index of row in transitionTable to update; 
 		char command = target.command;
-		int indexOfCommand = findIndexOfChar(command);
+		int indexOfCommand = findIndexOfChar(command); //need the method for changing a char into an index in the alphabet.
 		StateID targetID = target.stateID;
 		
-		//check if valid row
-		if(rowIndex >= table.size()){
-			return false;
-		}
-		
-		//modify the transition table at the place
 		table.get(rowIndex)[indexOfCommand] = targetID;
 		
-		return true;
+		
 	}
 
 	//---------------------------------HELPER FUNCTIONS-------------------------------------//

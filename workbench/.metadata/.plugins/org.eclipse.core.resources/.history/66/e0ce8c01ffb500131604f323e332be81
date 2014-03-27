@@ -10,6 +10,5 @@ public class StateID {
 	
 	public int get(){ return stateID;}
 	public void set(int inputStateID){stateID = inputStateID;} 
-	public boolean equals(StateID target){return this.stateID == target.get();} 
 
 }

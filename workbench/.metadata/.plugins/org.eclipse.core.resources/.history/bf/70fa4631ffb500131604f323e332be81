@@ -93,9 +93,9 @@ public class TransitionTable {
 	 * @return void
 	 */
 	public boolean updateSingleTransition(Episode source, Episode target){
-		int rowIndex = source.stateID.get(); //index of row in transitionTable to update;
+		int rowIndex = source.stateID.get(); //index of row in transitionTable to update; 
 		char command = target.command;
-		int indexOfCommand = findIndexOfChar(command);
+		int indexOfCommand = findIndexOfChar(command); //need the method for changing a char into an index in the alphabet.
 		StateID targetID = target.stateID;
 		
 		//check if valid row

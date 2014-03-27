@@ -13,7 +13,7 @@ public class TransitionTable {
 	/**
 	 * TransitionTable()
 	 * 
-	 * constructor.
+	 * ctor.
 	 * 
 	 * @param void - Default Constructor
 	 * 
@@ -70,7 +70,6 @@ public class TransitionTable {
 	 * Given an array of StateID's, add the row to the table
 	 * 
 	 * @param row - row to add
-	 * 
 	 * @return void
 	 */
 	public void addRow(StateID[] row){
@@ -79,35 +78,8 @@ public class TransitionTable {
 			table.add(row);
 		}
 	}
-	
-	/**
-	 * updateSingleTransition()
-	 * 
-	 * Given a source episode and a target episode this method will 
-	 * go to the row of the source stateID value and update, at the command
-	 * that was taken to get to the target, the value with the stateID of Target
-	 * 
-	 * @param source 
-	 * @param target
-	 * 
-	 * @return void
-	 */
-	public boolean updateSingleTransition(Episode source, Episode target){
-		int rowIndex = source.stateID.get(); //index of row in transitionTable to update;
-		char command = target.command;
-		int indexOfCommand = findIndexOfChar(command);
-		StateID targetID = target.stateID;
-		
-		//check if valid row
-		if(rowIndex >= table.size()){
-			return false;
-		}
-		
-		//modify the transition table at the place
-		table.get(rowIndex)[indexOfCommand] = targetID;
-		
-		return true;
-	}
+
+	public void 
 
 	//---------------------------------HELPER FUNCTIONS-------------------------------------//
 
@@ -131,36 +103,9 @@ public class TransitionTable {
 		return row;
 	}
 	
-	/**
-	 * size()
-	 * 
-	 * gets the numbers of rows in the table.
-	 * 
-	 * @return int - size of the table
-	 */
 	public int size(){
 		return table.size();
 	}
 	
-	/**
-	 * findIndexOfChar()
-	 * 
-	 * Maps char in alphabet to an index
-	 *
-	 * @param command - Letter from the alphabet
-	 * @return int - Index of the letter given --OR-- '-1' if the letter is 
-	 *				 not in the alphabet
-	 * 
-	 */
-	private int findIndexOfChar(char command){
-		int index = UNKNOWN_TRANSITION;
-		for(int j = 0; j<alphabet.length; ++j){
-			if(alphabet[j] == command){
-				index = j;
-				return j;
-			}
-		}
-		return index;
-	}
 	
 }
