@@ -43,7 +43,6 @@ public class Test_TransitionTable {
 	 * Cases Tested:
 	 * 				- Ensure the size of the table increases by one when a null row is added
 	 * 
-	 * 
 	 */
 	@Test
 	public void testAddNullRow(){
@@ -66,7 +65,6 @@ public class Test_TransitionTable {
 	 *				- Ensure that all values in the new row are '-1' 
 	 * 				- Ensure that the length of the row is the same as the length of the alphabet
 	 *
-	 * 
 	 */
 	@Test
 	public void testAddEmptyRow(){
@@ -91,7 +89,6 @@ public class Test_TransitionTable {
 	 *
 	 * Test the functionality of adding a given row to the table 
 	 *
-	 * 
 	 */
 	@Test
 	public void testAddRow() {
@@ -121,7 +118,6 @@ public class Test_TransitionTable {
 	 *
 	 * Test the functionality of the method that checks whether or not a table is full
 	 * 
-	 * 
 	 */
 	@Test
 	public void testIsTransitionTableFull() {
@@ -143,7 +139,37 @@ public class Test_TransitionTable {
 		
 		assertTrue("With an empty row added to the table, the table is not full",containsUnknownTransitions(transitionTable));
 	} 
-	
+	/**
+	 * testUpdateSingleTransition()
+	 * 
+	 * Test the functionality of the UpdateSingleTransition method 
+	 * 
+	 */
+	@Test
+	public void testUpdateSingleTransition() {
+		char[] alphabet = createAlphabet(5);
+		TransitionTable transitionTable = new TransitionTable(alphabet);
+		
+		StateID[] newRow = createRow(2,transitionTable.alphabet.length);
+		StateID[] newRow2 = createRow(3,transitionTable.alphabet.length);
+		
+		transitionTable.addRow(newRow);
+		transitionTable.addRow(newRow2);
+		
+		StateID beforeUpdate = transitionTable.table.get(1)[2];
+		
+		Episode source = new Episode(' ',-1,1);
+		Episode target = new Episode('c',-1,9000);
+		
+		boolean added = updateSingleTransition(source,target);
+		
+		StateID afterUpdate = transitionTable.table.get(1)[2];
+		
+		assertTrue("Ensure that a value in the table is changed",beforeUpdate.get() != afterUpdate.get() && added);
+		assertTrue("The value was actually updated to the appropriate value",afterUpdate.get() == 9000);
+		
+		
+	}
 	
 	//---------------------------------HELPER FUNCTIONS-------------------------------------//
 	
