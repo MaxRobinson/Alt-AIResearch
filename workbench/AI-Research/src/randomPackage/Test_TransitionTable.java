@@ -67,9 +67,59 @@ public class Test_TransitionTable {
 		assertTrue("Make sure that the row length = alphabet length", isCorrectLength(transitionTable.table.get(1), transitionTable.alphabet.length));
 	}
 	
-	//----------------------------------------------------HELPER FUNCTIONS----------------------------------------------------------//
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * testAddRow()
+	 *
+	 * Test the functionality of adding a given row to the table 
+	 *
+	 * @Test
+	 */
+	public void testAddRow() {
+		TransitionTable transitionTable = new TransitionTable();
+		
+		int numRowsBeforeAdd = transitionTable.size();
+		
+		transitionTable.addRow(createRow(9000,transitionTable.alphabet.length));
+		
+		int numRowsAfterAdd = transitionTable.size();
+		
+		boolean numRowsCorrect = numRowsAfterAdd - 1 == numRowsBeforeAdd;
+		
+		int maxIndexOfTable = numRowsAfterAdd - 1;
+		
+		assertTrue("Make sure the size of the table increases by one when a row is added",numRowsCorrect);
+		assertTrue("Make sure that the row added is at the end of the table",checkRowPosition(transitionTable,newRow,maxIndexOfTable));
+		assertTrue("Make sure that the values in the row are as expected",checkRowValues(transitionTable.table.get(maxIndexOfTable),newRow));
+	}
+	
+	/**
+	 * testIsTransitionTableFull()
+	 *
+	 * Test the functionality of the method that checks whether or not a table is full
+	 * 
+	 * @Test
+	 */
+	public void testIsTransitionTableFull() {
+		TransitionTable transitionTable = new TransitionTable();
+		
+		assertTrue("With no rows added the table should be full as there are no unknown transitions",transitionTable.table.size() == 1);
+		
+		transitionTable.addNullRow();
+		
+		assertTrue("With a null row added, the table is still full",!doesTableContainValues(transitionTable));
+		
+		transitionTable.addRow(createRow(9000,transitionTable.alphabet.length));
+		
+		assertTrue("With a full row added with no unknown transitions, the table is still full",!containsUnknownTransitions(transitionTable));
+		
+		transitionTable.addEmptyRow();
+		
+		assertTrue("With an empty row added to the table, the table is not full",containsUnknownTransitions(transitionTable));
+	} 
+	
+	
+	//---------------------------------HELPER FUNCTIONS-------------------------------------//
+	
 	
 	/**
 	 * checkRowValues()
@@ -110,4 +160,80 @@ public class Test_TransitionTable {
 		return row.length == length;
 	}
 	
+	/**
+	 * checkRowPosition()
+	 * 
+	 * Ensures that the row given is at the specified location. Given a table, a row index 
+	 * of that table and an array of StateID's, checks to make sure 
+	 * that the row at the given index is equivalent to the given row.
+	 *
+	 * @param table    - The table in question
+	 * @param row      - The row of StateID's in question
+	 * @param rowIndex - The suspected index of the row
+	 *
+	 * @return boolean - True if the row at the given index matches the given row --OR--
+	 *					 False if the row does not match the row at the given index
+	 */
+	public boolean checkRowPosition(TransitionTable table, StateID[] row, int rowIndex) {
+		return checkRowValues(table.get(rowIndex), row);
+	}
+	
+	/**
+	 * doesTableContainValues()
+	 *
+	 * Given a TransitionTable, checks to see if the table contains any values or if
+	 * all rows are null
+	 * 
+	 *
+	 * @param table - The transition table in question
+	 * 
+	 * @return boolean - True if the table contains values --OR-- False if the table has only null entries
+	 */
+	public boolean doesTableContainValues(TransitionTable table) {
+		for(StateID[] row : table) {
+			if(row != null) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * createRow()
+	 *
+	 * create a non empty array of StateID's, all values must not be equal to '-1'
+	 *
+	 * @param value - The Value to be placed in each slot of the array
+	 * 				  This value should most likely be 9000 in reference to the 
+	 *                jackhawk9000 which is of course available at walmart
+	 * 
+	 * @param length - The length of the array to be created
+	 * 
+	 * @return StateID[] - An array of StateID's with specified values 
+	 */
+	public StateID[] createRow(int value, int length) {
+		StateID[] row = new StateID[length];
+		for(StateID stateId : row) {
+			stateID = new StateID(value);
+		}
+		return row;
+	}
+	
+	/**
+	 * containsUnknownTransitions()
+	 *
+	 * Given a TransitionTable, checks to see if the table contains any values equal to '-1'
+	 * 
+	 * @param table - The transition table in question
+	 * 
+	 * @return boolean - True if the table contains '-1' --OR-- False if the table has only 'other' entries
+	 */
+	public boolean containsUnknownTransitions(TransitionTable table) {
+		for(StateID[] row : table) {
+			for(int i=0;row!=null && i<row.length;++i) {
+				if(row[i].get() == -1) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
