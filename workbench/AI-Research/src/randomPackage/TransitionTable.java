@@ -31,7 +31,7 @@ public class TransitionTable {
 	 * 
 	 * @param alphabet - A given set of chars to use as a transition table's alphabet
 	 * 
-	 * TODO: Still to be tested
+	 * 
 	 */
 	public TransitionTable(char[] alphabet){
 		table = new ArrayList<StateID[]>();
@@ -97,8 +97,8 @@ public class TransitionTable {
 	 */
 	public StateID[] createRow(int value, int length) {
 		StateID[] row = new StateID[length];
-		for(StateID stateId : row) {
-			stateId = new StateID(value);
+		for(int i=0;i<row.length;i++) {
+			row[i] = new StateID(value);
 		}
 		return row;
 	}

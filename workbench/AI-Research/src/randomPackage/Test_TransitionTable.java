@@ -47,7 +47,9 @@ public class Test_TransitionTable {
 	 */
 	@Test
 	public void testAddNullRow(){
-		TransitionTable transitionTable = new TransitionTable();
+		char[] alphabet = createAlphabet(5);
+		
+		TransitionTable transitionTable = new TransitionTable(alphabet);
 		int sizeBeforeAdd = transitionTable.table.size();
 		transitionTable.addNullRow();
 		int sizeAfterAdd = transitionTable.table.size();
@@ -68,7 +70,9 @@ public class Test_TransitionTable {
 	 */
 	@Test
 	public void testAddEmptyRow(){
-		TransitionTable transitionTable = new TransitionTable();
+		char[] alphabet = createAlphabet(5);
+		
+		TransitionTable transitionTable = new TransitionTable(alphabet);
 		
 		transitionTable.addEmptyRow();
 		
@@ -156,6 +160,8 @@ public class Test_TransitionTable {
 	 *
 	 */
 	private boolean checkRowValues(StateID[] rowToValidate, StateID[] correctRow){
+		
+		if(rowToValidate == null || correctRow == null) return false;
 		if(rowToValidate.length != correctRow.length) return false;
 		
 		for(int i = 0; i<rowToValidate.length; ++i ){
@@ -234,8 +240,8 @@ public class Test_TransitionTable {
 	 */
 	public StateID[] createRow(int value, int length) {
 		StateID[] row = new StateID[length];
-		for(StateID stateId : row) {
-			stateId = new StateID(value);
+		for(int i=0;i<row.length;i++) {
+			row[i] = new StateID(value);
 		}
 		return row;
 	}
