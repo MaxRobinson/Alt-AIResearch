@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename compilation unit &apos;randomPackage.ConjecturePathReturn.java&apos; to &apos;ListAndBool.java&apos;&#x0D;&#x0A;- Original project: &apos;AI-Research&apos;&#x0D;&#x0A;- Original element: &apos;randomPackage.ConjecturePathReturn.java&apos;&#x0D;&#x0A;- Renamed element: &apos;randomPackage.ListAndBool.java&apos;" description="Rename compilation unit &apos;ConjecturePathReturn.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;randomPackage{ConjecturePathReturn.java" name="ListAndBool.java" references="false" stamp="1393547463516" version="1.0"/>
-</session>
