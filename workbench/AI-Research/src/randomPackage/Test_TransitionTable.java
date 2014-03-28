@@ -3,6 +3,7 @@ package randomPackage;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import java.util.ArrayList;
 
 public class Test_TransitionTable {
 	
@@ -73,7 +74,8 @@ public class Test_TransitionTable {
 		TransitionTable transitionTable = new TransitionTable(alphabet);
 		
 		transitionTable.addEmptyRow();
-		
+
+        //This is what the row that was added *should* be
 		StateID[] correctRow = new StateID[transitionTable.alphabet.length];
 		for(int i=0;i<correctRow.length;i++) {
 			correctRow[i] = new StateID(-1);
@@ -161,18 +163,50 @@ public class Test_TransitionTable {
 		Episode source = new Episode(' ',-1,1);
 		Episode target = new Episode('c',-1,9000);
 		
-		boolean added = updateSingleTransition(source,target);
+		transitionTable.updateSingleTransition(source,target);
 		
 		StateID afterUpdate = transitionTable.table.get(1)[2];
 		
-		assertTrue("Ensure that a value in the table is changed",beforeUpdate.get() != afterUpdate.get() && added);
+		assertTrue("Ensure that a value in the table is changed",beforeUpdate.get() != afterUpdate.get());
 		assertTrue("The value was actually updated to the appropriate value",afterUpdate.get() == 9000);
-		
 		
 	}
 	
+	/**
+	 * testAddPath()
+	 * 
+	 * Test the functionality of the addPath method 
+	 * 
+	 */
+	@Test
+	public void testAddPath() {
+		char[] alphabet = createAlphabet(5);
+		TransitionTable transitionTable = new TransitionTable(alphabet);
+
+        //Create an initial state
+		StateID[] starterRow = createRow(2,transitionTable.alphabet.length);
+        transitionTable.addRow(starterRow);
+
+        //create an array with 5 episodes
+        ArrayList<Episode> eps = new ArrayList<Episode>();
+        for(int i = 0; i < 5; ++i) {
+            eps.add(new Episode(alphabet[i],-1,i+2));
+        }
+
+        //Use the addPath method with the list
+        transitionTable.addPath(eps);
+
+        //Verify they were added properly
+        for(int i = 1; i < 5; ++i) {
+            assertTrue("Testing for correct transition from episodes",
+                       transitionTable.table.get(i+1)[i].get() == i+2);
+        }        
+		
+	}
+
+
+    
 	//---------------------------------HELPER FUNCTIONS-------------------------------------//
-	
 	
 	/**
 	 * checkRowValues()

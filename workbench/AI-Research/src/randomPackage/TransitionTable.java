@@ -2,12 +2,23 @@ package randomPackage;
 
 import java.util.ArrayList;
 
+/**
+ * class TransitionTable
+ *
+ * contains a transition table representing a FSM as created by an episodic
+ * memory agent
+ */
+
 public class TransitionTable {
 	
 	//CONSTANTS
 	public static final int UNKNOWN_TRANSITION = -1;
 
+    /** The table itself is an ArrayList of array since each row in the table
+	 * will always ways be the same length as the alphabet.
+     */
 	protected ArrayList<StateID[]> table;
+    /** the alphabet of allowed commands used by the FSM */
 	protected char[] alphabet;
 
 	/**
@@ -92,23 +103,44 @@ public class TransitionTable {
 	 * 
 	 * @return void
 	 */
-	public boolean updateSingleTransition(Episode source, Episode target){
+	public void updateSingleTransition(Episode source, Episode target){
 		int rowIndex = source.stateID.get(); //index of row in transitionTable to update;
+        System.out.println("" + rowIndex);
 		char command = target.command;
 		int indexOfCommand = findIndexOfChar(command);
 		StateID targetID = target.stateID;
 		
 		//check if valid row
 		if(rowIndex >= table.size()){
-			return false;
+            System.err.println("ERROR:  corrupted episode passed to updateSingleTransition");
+            System.exit(-1);
 		}
 		
 		//modify the transition table at the place
 		table.get(rowIndex)[indexOfCommand] = targetID;
-		
-		return true;
 	}
 
+    /**
+     * addPath
+     *
+     * given a list of Episode objects, this method adds associated transitions
+     *
+     * @param eps   the list of episodes
+     */
+    public void addPath(ArrayList<Episode> eps) {
+        Episode prev = eps.get(0);
+        for(int i = 1; i < eps.size(); ++i)
+        {
+            Episode curr = eps.get(i);
+
+            //Make sure there is an entry in the table for this episode
+            //%%%while(this.size() == 
+            
+            updateSingleTransition(prev, curr);
+            prev = curr;
+        }
+    }
+    
 	//---------------------------------HELPER FUNCTIONS-------------------------------------//
 
 	/**
