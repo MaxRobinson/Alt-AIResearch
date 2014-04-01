@@ -235,6 +235,37 @@ public class Test_TransitionTable {
 
     }
 
+    /**
+     * testPrint()
+     * 
+     * Test the functionality of the addPath method
+     * 
+     */
+    @Test
+    public void testPrint() {
+        char[] alphabet = createAlphabet(5);
+        TransitionTable transitionTable = new TransitionTable(alphabet);
+
+        // Create an initial state
+        StateID[] starterRow = createRow(2, transitionTable.alphabet.length);
+        transitionTable.addRow(starterRow);
+
+        // create an array with 5 episodes
+        ArrayList<Episode> eps = new ArrayList<Episode>();
+        for (int i = 0; i < 5; ++i) {
+            eps.add(new Episode(alphabet[i], -1, i + 2));
+        }
+
+        // Use the addPath method with the list
+        transitionTable.addPath(eps);
+
+        // Print it
+        transitionTable.print();
+
+    }//testPrint
+
+
+    
     // ---------------------------------HELPER
     // FUNCTIONS-------------------------------------//
 

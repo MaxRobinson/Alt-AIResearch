@@ -129,24 +129,68 @@ public class TransitionTable {
     /**
      * addPath
      * 
-     * given a list of Episode objects, this method adds associated transitions
+     * given a list of Episode objects, this method adds associated
+     * transitions.  If an episode contains a state Id for which there is no row
+     * in the table, rows are added to accommodate it.
      * 
      * @param eps
      *            the list of episodes
      */
     public void addPath(ArrayList<Episode> eps) {
         Episode prev = eps.get(0);
-        for (int i = 1; i < eps.size(); ++i) {
+        for (int i = 1; i < eps.size(); ++i) {  //start at '1' because we're
+                                                //processing pairs of Episodes
             Episode curr = eps.get(i);
 
             // Make sure there is an entry in the table for this episode
-            // %%%while(this.size() ==
+            while(this.size() <= prev.stateID.get())
+            {
+                this.addEmptyRow();
+            }
 
             updateSingleTransition(prev, curr);
             prev = curr;
-        }
-    }
+        }//for
+    }//addPath
 
+    /**
+     * print()
+     * 
+     * This method prints an ASCII representation of the table to stdout
+     * 
+     */
+    public void print() {
+        System.out.print("     ");
+        for (int i = 0; i < alphabet.length; ++i) {
+            System.out.printf("%3c", alphabet[i]);
+        }
+        System.out.println();
+
+        for (int i = 0; i < table.size(); i++) {
+            System.out.printf("%3d: ", i);
+
+            if (table.get(i) != null)
+            {
+                for (int j = 0; j < alphabet.length; j++) {
+                    System.out.printf("%3d", table.get(i)[j].get());
+                }
+                System.out.println();
+            }
+            else
+            {
+                System.out.println("  null");
+            }
+        }//for
+
+        System.out.print("     ");
+        for (int i = 0; i < alphabet.length; ++i) {
+            System.out.printf("%3c", alphabet[i]);
+        }
+        System.out.println();
+
+    }//print
+
+    
     // ---------------------------------HELPER
     // FUNCTIONS-------------------------------------//
 
