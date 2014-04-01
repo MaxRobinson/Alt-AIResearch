@@ -249,4 +249,14 @@ public class TransitionTable {
         return index;
     }
 
+    /**
+     * get
+     *
+     * retrieves a single row from the table
+     */
+    public StateID[] get(int i)
+    {
+        return table.get(i);
+    }
+
 }
