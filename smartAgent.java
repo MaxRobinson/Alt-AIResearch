@@ -533,6 +533,12 @@ public class smartAgent extends Agent {
         }
     }
 
+    
+    
+    // Has Beem Replaced by UpdateSingleTransition
+    // replace this call with a call to UpdateSingleTransition with
+    // source = currentPath.size() - 2 --> second to last episode in current Path 
+    // target = currentPath.size() - 1 --> last Episode in current Path
     /**
      * 
      * @param conjecturePathReturn
