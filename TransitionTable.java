@@ -96,6 +96,24 @@ public class TransitionTable {
     }
 
     /**
+     * setRow()
+     * 
+     * Given an array of StateID's, and an index, add the row to the table at the index
+     * 
+     * @param row - row to add
+     * @param idx - where to insert the row
+     * 
+     * IMPORTANT: ROW MUST EXIST PRIOR TO THIS METHOD BEING CALLED!!
+     * 
+     * TODO: Must create test for this method
+     * 
+     * @return void
+     */
+    public void setRow(StateID[] row, int idx) {
+        table.set(idx, row);
+    }
+    
+    /**
      * updateSingleTransition()
      * 
      * Given a source episode and a target episode this method will go to the
