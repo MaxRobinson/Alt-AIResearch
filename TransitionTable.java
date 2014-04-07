@@ -98,21 +98,24 @@ public class TransitionTable {
     /**
      * setRow()
      * 
-     * Given an array of StateID's, and an index, add the row to the table at the index
+     * Given an array of StateID's, and an index, add the row to the table at
+     * the index
      * 
-     * @param row - row to add
-     * @param idx - where to insert the row
+     * @param row
+     *            - row to add
+     * @param idx
+     *            - where to insert the row
      * 
-     * IMPORTANT: ROW MUST EXIST PRIOR TO THIS METHOD BEING CALLED!!
+     *            IMPORTANT: ROW MUST EXIST PRIOR TO THIS METHOD BEING CALLED!!
      * 
-     * TODO: Must create test for this method
+     *            TODO: Must create test for this method
      * 
      * @return void
      */
     public void setRow(StateID[] row, int idx) {
         table.set(idx, row);
     }
-    
+
     /**
      * updateSingleTransition()
      * 
@@ -147,29 +150,28 @@ public class TransitionTable {
     /**
      * addPath
      * 
-     * given a list of Episode objects, this method adds associated
-     * transitions.  If an episode contains a state Id for which there is no row
-     * in the table, rows are added to accommodate it.
+     * given a list of Episode objects, this method adds associated transitions.
+     * If an episode contains a state Id for which there is no row in the table,
+     * rows are added to accommodate it.
      * 
      * @param eps
      *            the list of episodes
      */
     public void addPath(ArrayList<Episode> eps) {
         Episode prev = eps.get(0);
-        for (int i = 1; i < eps.size(); ++i) {  //start at '1' because we're
-                                                //processing pairs of Episodes
+        for (int i = 1; i < eps.size(); ++i) { // start at '1' because we're
+                                               // processing pairs of Episodes
             Episode curr = eps.get(i);
 
             // Make sure there is an entry in the table for this episode
-            while(this.size() <= prev.stateID.get())
-            {
+            while (this.size() <= prev.stateID.get()) {
                 this.addEmptyRow();
             }
 
             updateSingleTransition(prev, curr);
             prev = curr;
-        }//for
-    }//addPath
+        }// for
+    }// addPath
 
     /**
      * print()
@@ -187,18 +189,15 @@ public class TransitionTable {
         for (int i = 0; i < table.size(); i++) {
             System.out.printf("%3d: ", i);
 
-            if (table.get(i) != null)
-            {
+            if (table.get(i) != null) {
                 for (int j = 0; j < alphabet.length; j++) {
                     System.out.printf("%3d", table.get(i)[j].get());
                 }
                 System.out.println();
-            }
-            else
-            {
+            } else {
                 System.out.println("  null");
             }
-        }//for
+        }// for
 
         System.out.print("     ");
         for (int i = 0; i < alphabet.length; ++i) {
@@ -206,9 +205,8 @@ public class TransitionTable {
         }
         System.out.println();
 
-    }//print
+    }// print
 
-    
     // ---------------------------------HELPER
     // FUNCTIONS-------------------------------------//
 
@@ -269,11 +267,10 @@ public class TransitionTable {
 
     /**
      * get
-     *
+     * 
      * retrieves a single row from the table
      */
-    public StateID[] get(int i)
-    {
+    public StateID[] get(int i) {
         return table.get(i);
     }
 

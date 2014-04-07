@@ -262,10 +262,8 @@ public class Test_TransitionTable {
         // Print it
         transitionTable.print();
 
-    }//testPrint
+    }// testPrint
 
-
-    
     // ---------------------------------HELPER
     // FUNCTIONS-------------------------------------//
 
