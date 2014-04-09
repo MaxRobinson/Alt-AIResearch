@@ -63,6 +63,7 @@ public class smartAgent extends Agent {
      * 
      * @param void
      * @return int - The state that has an unknown transition
+     * 				 --OR-- '-1' if there are no states with unknown transitions
      * 
      */
     public int findNextOpenState() {
@@ -160,17 +161,7 @@ public class smartAgent extends Agent {
      *         not
      */
     public boolean isTransitionTableFull() {
-        for (int i = 0; i < transitionTable.size(); ++i) {
-            StateID[] row = transitionTable.get(i);
-            if (row != null) {
-                for (int j = 0; j < row.length; ++j) {
-                    if (row[j].get() == UNKNOWN_TRANSITION) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+        return !transitionTable.containsUnknownTransitions();
     }
 
     /**
@@ -591,7 +582,7 @@ public class smartAgent extends Agent {
     }
 
     /**
-     * 
+     * TODO: Method Header
      */
     public void addCurrentPathToEpisodic() {
         for (Episode episode : currentPath) {

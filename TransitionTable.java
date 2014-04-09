@@ -207,10 +207,31 @@ public class TransitionTable {
         System.out.println();
 
     }//print
-
     
-    // ---------------------------------HELPER
-    // FUNCTIONS-------------------------------------//
+    /**
+     * containsUnknownTransitions()
+     * 
+     * Given a TransitionTable, checks to see if the table contains any values
+     * equal to '-1'
+     * 
+     * @param table
+     *            - The transition table in question
+     * 
+     * @return boolean - True if the table contains '-1' --OR-- False if the
+     *         table has only 'other' entries
+     */
+    public boolean containsUnknownTransitions() {
+        for (StateID[] row : table) {
+            for (int i = 0; row != null && i < row.length; ++i) {
+                if (row[i].get() == -1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    // ---------------------------------HELPER FUNCTIONS-------------------------------------//
 
     /**
      * createRow()

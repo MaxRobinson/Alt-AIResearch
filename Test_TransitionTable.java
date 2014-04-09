@@ -149,25 +149,25 @@ public class Test_TransitionTable {
 
         assertTrue(
                 "With no rows added the table should be full as there are no unknown transitions",
-                transitionTable.table.size() == 1);
+                !transitionTable.containsUnknownTransitions());
 
         transitionTable.addNullRow();
 
         assertTrue("With a null row added, the table is still full",
-                !doesTableContainValues(transitionTable));
+                !transitionTable.containsUnknownTransitions());
 
         transitionTable
                 .addRow(createRow(9000, transitionTable.alphabet.length));
 
         assertTrue(
                 "With a full row added with no unknown transitions, the table is still full",
-                !containsUnknownTransitions(transitionTable));
+                !transitionTable.containsUnknownTransitions());
 
         transitionTable.addEmptyRow();
 
         assertTrue(
                 "With an empty row added to the table, the table is not full",
-                containsUnknownTransitions(transitionTable));
+                transitionTable.containsUnknownTransitions());
     }
 
     /**
@@ -266,8 +266,7 @@ public class Test_TransitionTable {
 
 
     
-    // ---------------------------------HELPER
-    // FUNCTIONS-------------------------------------//
+    // ---------------------------------HELPER FUNCTIONS-------------------------------------//
 
     /**
      * checkRowValues()
@@ -384,29 +383,6 @@ public class Test_TransitionTable {
             row[i] = new StateID(value);
         }
         return row;
-    }
-
-    /**
-     * containsUnknownTransitions()
-     * 
-     * Given a TransitionTable, checks to see if the table contains any values
-     * equal to '-1'
-     * 
-     * @param table
-     *            - The transition table in question
-     * 
-     * @return boolean - True if the table contains '-1' --OR-- False if the
-     *         table has only 'other' entries
-     */
-    public boolean containsUnknownTransitions(TransitionTable table) {
-        for (StateID[] row : table.table) {
-            for (int i = 0; row != null && i < row.length; ++i) {
-                if (row[i].get() == -1) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**
