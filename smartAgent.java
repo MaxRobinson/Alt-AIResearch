@@ -194,7 +194,7 @@ public class smartAgent extends Agent {
         int currentMatchedPathLength = 0;
 
         // Find all indices in episodic memory of matching episodes
-        indexList = checkIfEpisodeOccured(stateToBeMatched);
+        indexList = checkIfEpisodeOccured(stateToBeMatched); //Should take list as param as well
 
         if (indexList.size() > 0) {
             currentMatchedPathLength++;
