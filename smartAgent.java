@@ -306,21 +306,19 @@ public class smartAgent extends Agent {
     /**
      * decrementArrayList()
      * 
-     * Given an arrayList of integers, decrements all values by a given ammount
+     * Given an arrayList of integers, decrements all values by a given amount
      * 
-     * @param list
-     *            - arrayList to decrement
-     * @param decrementAmount
-     *            - ammount to decrement the values in the list
+     * @param list - arrayList to decrement
+     * @param decrementAmount - amount to decrement the values in the list
+     * 
      * @return ArrayList<Integer> - The decremented arrayList
-     * 
      * 
      */
     public ArrayList<Integer> decrementArrayList(ArrayList<Integer> list,int decrementAmount) {
-        ArrayList<Integer> temp = new ArrayList<Integer>();
-        temp = list;
-        for (int x : temp) {
-            x -= decrementAmount;
+        ArrayList<Integer> temp = new ArrayList<Integer>(list);
+        for (int i=0;i<temp.size();i++) {
+        	Integer x = temp.get(i) - decrementAmount;
+            temp.set(i, x);
         }
         return temp;
     }//decrementArrayList
@@ -331,10 +329,8 @@ public class smartAgent extends Agent {
      * Given a list of episodes and an episode to check for, runs through the
      * list searching for the episode
      * 
-     * @param indexList
-     *            - List of episodes to search
-     * @param episode
-     *            - Episode to search for
+     * @param indexList - List of episodes to search
+     * @param episode - Episode to search for
      * @return ArrayList<Integer> - List of all indeces where the episode was
      *         found
      * 
@@ -355,8 +351,7 @@ public class smartAgent extends Agent {
      * Overloaded: Given an episode, searches episodicMemory for matching
      * episodes
      * 
-     * @param episode
-     *            - Episode to search for in memory
+     * @param episode - Episode to search for in memory
      * @return ArrayList<Integer> - List of indeces in episodic memory where a
      *         matching episode was found
      */
@@ -371,12 +366,11 @@ public class smartAgent extends Agent {
     }//checkIfEpisodeOccured
 
     /**
-     * buildConjecture Path()
+     * buildConjecturePath()
      * 
      * Builds a path from the episode at the given index in memory to the goal
      * 
-     * @param index
-     *            - Index in memory from which to start the path
+     * @param index - Index in memory from which to start the path
      * @return ArrayList<Episode> - the path that was found
      * 
      */
@@ -459,14 +453,7 @@ public class smartAgent extends Agent {
      * 
      */
     public void printTransTable() {
-        for (int i = 0; i < transitionTable.size(); ++i) {
-            for (int j = 0; j < alphabet.length; j++) {
-                if (transitionTable.get(i) != null) {
-                    System.out.print(transitionTable.get(i)[j].get() + " ");
-                }
-            }
-            System.out.println("");
-        }
+        transitionTable.print();
     }//printTransitionTable
 
     
