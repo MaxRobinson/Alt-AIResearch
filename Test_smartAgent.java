@@ -212,15 +212,11 @@ public class Test_smartAgent {
 	//Still to test
 	/*
 	 * modifyTransitionTable
-	 * addToTransitionTable (DEPRECATED...SHOULD NOT BE USED)
 	 * decrementArrayList
 	 * checkIfEpisodeOccured (Overloaded...check both)
 	 * buildConjecturePath
 	 * testConjecture
-	 * printTransTable (DEPRECATED...SHOULD NOT BE USED)
 	 * moveToEnd (DEPRECATED...SHOULD NOT BE USED)
-	 * addCurrentPathToEpisodic
-	 * addPathToTransTable(DEPRECATED SHOULD NOT BE USED)
 	 * 
 	 */
 	

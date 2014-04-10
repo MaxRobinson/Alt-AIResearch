@@ -95,7 +95,7 @@ public class smartAgent extends Agent {
         for (int j = 0; j < goalStateRow.length; ++j) {
             goalStateRow[j] = new StateID(GOAL_STATE_TRANSITION);
         }
-    }
+    }//initTransTable()
 
     /**
      * makeExploratoryMove()
@@ -113,7 +113,6 @@ public class smartAgent extends Agent {
     public void makeExploratoryMove(int next) {
         char nextMove;
         int index;
-        // find move to make
         do {
             nextMove = randomChar(alphabet.length);
             index = findIndex(nextMove);
@@ -139,15 +138,8 @@ public class smartAgent extends Agent {
      * 
      */
     private int findIndex(char command) {
-        int index = UNKNOWN_TRANSITION;
-        for (int j = 0; j < alphabet.length; ++j) {
-            if (alphabet[j] == command) {
-                index = j;
-                return j;
-            }
-        }
-        return index;
-    }
+        return transitionTable.findIndexOfChar(command);
+    }//findIndex
 
     /**
      * isTransitionTableFull()
@@ -162,7 +154,7 @@ public class smartAgent extends Agent {
      */
     public boolean isTransitionTableFull() {
         return !transitionTable.containsUnknownTransitions();
-    }
+    }//isTransitionTableFull
 
     /**
      * analyzeMove()
@@ -293,61 +285,24 @@ public class smartAgent extends Agent {
      * @return void
      */
     public void modifyTransitionTable() {
-
-        // Sanity check
-        if (equivStates.size() <= 0 && diffStates.size() <= 0) {
-            return; // Should not reach this statement.
-        }
-
         if (equivStates.size() > 0) {
             // equivStates holds CurrentState([0]) and state it is equal to([1])
             equivStates.get(0)[1] = equivStates.get(0)[0];
 
             // add a null row to the table to account for a state that no longer
             // exists
-            
-            
-            //THIS WAS HERE ORIGINALLY
-            //transitionTable.add(null);
-            
-            //TODO:Check this change
             transitionTable.addNullRow();
             
-            
             // set equivStates back to length 0.
-            equivStates.remove(0);
+            equivStates.clear();
         }
-
         if (diffStates.size() > 0) {
-            addToTransitionTable();
-            diffStates.remove(0);
+            transitionTable.addEmptyRow();
+            diffStates.clear();
         }
+    }//modifyTransitionTable
 
-    }
-
-    /**
-     * addToTransitionTable()
-     * 
-     * Adds a row of unknown transitions to the transition table to hold the
-     * place of a newly discovered diff state
-     * 
-     * @param void
-     * @return void
-     * 
-     */
-    public void addToTransitionTable() {
-        StateID[] newState = new StateID[alphabet.length];
-        for (int j = 0; j < newState.length; ++j) {
-            newState[j] = new StateID(UNKNOWN_TRANSITION);
-        }
-        
-        //THIS WAS HERE ORIGINALLY
-        //transitionTable.add(newState);
-        
-        //TODO:Check this change
-        transitionTable.addRow(newState);
-    }
-
+   
     /**
      * decrementArrayList()
      * 
@@ -361,15 +316,14 @@ public class smartAgent extends Agent {
      * 
      * 
      */
-    public ArrayList<Integer> decrementArrayList(ArrayList<Integer> list,
-            int decrementAmount) {
+    public ArrayList<Integer> decrementArrayList(ArrayList<Integer> list,int decrementAmount) {
         ArrayList<Integer> temp = new ArrayList<Integer>();
         temp = list;
         for (int x : temp) {
             x -= decrementAmount;
         }
         return temp;
-    }
+    }//decrementArrayList
 
     /**
      * checkIfEpisodeOccured()
@@ -385,8 +339,7 @@ public class smartAgent extends Agent {
      *         found
      * 
      */
-    public ArrayList<Integer> checkIfEpisodeOccured(
-            ArrayList<Integer> indexList, Episode episode) {
+    public ArrayList<Integer> checkIfEpisodeOccured(ArrayList<Integer> indexList, Episode episode) {
         ArrayList<Integer> tempList = new ArrayList<Integer>();
         for (int i = 0; i < indexList.size(); ++i) {
             if (episode.equals(episodicMemory.get(indexList.get(i)))) {
@@ -394,7 +347,7 @@ public class smartAgent extends Agent {
             }
         }
         return tempList;
-    }
+    }//checkIfEpisodeOccured
 
     /**
      * checkIfEpisodeOccurred()
@@ -408,14 +361,14 @@ public class smartAgent extends Agent {
      *         matching episode was found
      */
     public ArrayList<Integer> checkIfEpisodeOccured(Episode episode) {
-        ArrayList<Integer> indexList = new ArrayList<Integer>();
+    	ArrayList<Integer> indexList = new ArrayList<Integer>();
         for (int i = 0; i < episodicMemory.size(); ++i) {
             if (episodicMemory.get(i).equals(episode)) {
                 indexList.add(i);
             }
         }
         return indexList;
-    }
+    }//checkIfEpisodeOccured
 
     /**
      * buildConjecture Path()
@@ -430,22 +383,16 @@ public class smartAgent extends Agent {
     public ArrayList<Episode> buildConjecturePath(int index) {
         ArrayList<Episode> conjecturePath = new ArrayList<Episode>();
         int tempIndex = 0;
-        while (episodicMemory.size() > index + tempIndex
-                && episodicMemory.get(index).sensorValue != MYSTERY_AND_GOAL_ON) {
-            conjecturePath.add(new Episode(episodicMemory
-                    .get(index + tempIndex)));
+        while (episodicMemory.size() > index + tempIndex && episodicMemory.get(index).sensorValue != MYSTERY_AND_GOAL_ON) {
+            conjecturePath.add(new Episode(episodicMemory.get(index + tempIndex)));
             tempIndex++;
         }
-
-        // We subtract one because of the way the loop will fail when index is
-        // too large
+        //subtract 1 as loop will fail after the index has been updated one too many times
         int finalIndex = index + tempIndex - 1;
-
         // add final state that takes the agent to the goal
         conjecturePath.add(new Episode(episodicMemory.get(finalIndex - 1)));
-
         return conjecturePath;
-    }
+    }//buildConjecturePath
 
     /**
      * TODO: FIX METHOD HEADER testConjecture(ArrayList<Episode> conjecturePath)
@@ -477,12 +424,10 @@ public class smartAgent extends Agent {
         for (Episode episode : conjecturePath) {
             tempSensor = this.env.tick(episode.command); // A move is made!!!!
             int encodedSensorValue = this.encodeSensors(tempSensor);
-            tempPath.add(new Episode(episode.command, encodedSensorValue,
-                    ++tempStateNum));
+            tempPath.add(new Episode(episode.command, encodedSensorValue,++tempStateNum));
             if (!(encodedSensorValue == episode.sensorValue)) {
                 returnValue = false;
-                break; // if at any point a move is made and something doesn't
-                       // match, break.
+                break; 
             }
         }
 
@@ -522,7 +467,7 @@ public class smartAgent extends Agent {
             }
             System.out.println("");
         }
-    }
+    }//printTransitionTable
 
     
     
@@ -582,158 +527,104 @@ public class smartAgent extends Agent {
     }
 
     /**
-     * TODO: Method Header
+     * addCurrentPathToEpisodic()
+     * 
+     * Adds the current path to the episodic memory
+     * 
+     * @param void
+     * 
      */
     public void addCurrentPathToEpisodic() {
         for (Episode episode : currentPath) {
             episodicMemory.add(episode);
         }
-    }
+    }//addCurrentPathToEpisodic
 
     /**
-     * addPathToTransTable(ListAndBool ListOfNewEpisodes) This will add a new
-     * path of unknown Episodes to the transitionTable using the list of moves
-     * made from the conjectured state that is different till the move that was
-     * different from the rest.
+     * addPathToTransTable()
+     * 
+     * Adds a path (list of episodes) to the transition table, updating multiple
+     * transitions
      * 
      * @param ListOfNewEpisodes
      */
     public void addPathToTransTable(ListAndBool listOfNewEpisodes) {
-        // if the path that we are adding to the trans table is known
-        // just update in one spot.
-
-        // we are under the assumption that the number of rows in the table
-        // still corresponds to the StateID of the states being added.
-
-        // adds the rows needed for the transition Table
-
-        if (listOfNewEpisodes == null) {
-            System.out.println("listOfNewEpisodes is NULL, line 512.");
-        }
-
-        if (listOfNewEpisodes.getConjecturePath() == null) {
-            System.out.println("listOfNewEpisodes is NULL, line 516.");
-        }
-
-        for (int i = 0; i < listOfNewEpisodes.getConjecturePath().size(); ++i) {
-            StateID[] newState = new StateID[alphabet.length];
-            for (int j = 0; j < newState.length; ++j) {
-                newState[j] = new StateID(UNKNOWN_TRANSITION);
-            }
-            
-            //THIS WAS HERE ORIGINALLY
-            //transitionTable.add(newState);
-            
-            transitionTable.addRow(newState);
-        }
-
         ArrayList<Episode> newEpisodes = listOfNewEpisodes.getConjecturePath();
+        transitionTable.addPath(newEpisodes);
+    }//addPathToTransitionTable
 
-        // as we add these new states to the transition Table, we also have to
-        // add what move they make from one episode to the next one.
-        // Look at MoveToEnd to see how we have done it before
-        int indexOfRow = this.currentState; // Should double check to make sure
-                                            // that this is actually the state
-                                            // that is conjectured to be the
-                                            // same or diff.
-        int indexOfChar = findIndex(newEpisodes.get(0).command); // this will
-                                                                 // get the
-                                                                 // first move
-                                                                 // from
-                                                                 // conjectured
-                                                                 // state to the
-                                                                 // first
-                                                                 // episode in
-                                                                 // listOfNewEpisodes
-        transitionTable.get(indexOfRow)[indexOfChar] = newEpisodes.get(0).stateID;
-
-        for (int i = 1; i < newEpisodes.size(); ++i) {
-
-            indexOfRow = newEpisodes.get(i).stateID.get();
-            indexOfChar = findIndex(newEpisodes.get(i).command);
-            transitionTable.get(indexOfRow)[indexOfChar] = newEpisodes.get(i).stateID;
-
-        }
-
-    }
-
-    /*
-     * findBestPath() This method finds the best path for the agent from the
-     * start to finish and fills out the entire state table for the graph to the
-     * best of it's ability
+    /**
+     * run()
+     * 
+     * The main entrypoint of the smartAgent. Makes all appropriate method calls and runs until
+     * the transition table is full
+     * 
+     * @param void
+     * 
      */
     public void run() {
-        // step1
+        //Find a path to the goal
         this.findRandomPath();
 
-        // step2
-        //TODO: Check this change
-        this.initTransTable(this.episodicMemory); // open meaning has unfilled transition table
-                               // entries.
+        //Given the inital path to the goal, initialize the transitionTable
+        this.initTransTable(this.episodicMemory);
 
         while (!isTransitionTableFull()) {
 
-            // step 2b
+            //Find the next state with unknown transitions
             int next = findNextOpenState();
 
-            // step 3
-            this.makeExploratoryMove(next); // makes the move from the found open state
+            if(next == -1) {
+            	//no unknown transitions
+            	System.out.println("No more unknown transitions");
+            	return;
+            }
+            
+            //Make a move from the chosen state
+            this.makeExploratoryMove(next); 
 
-            // step 4
-            // ConjecturePathReturn conjecturePathReturn =
-            // this.analyzeMove(/*Step 5*/); // Checks to see if the state we
-            // land in is one we recognize
-            // boolean foundMatch = this.analyzeMove();
+            //Analyze the move made
             ListAndBool ListOfNewEpisodes = this.analyzeMove();
-            boolean foundMatch = ListOfNewEpisodes.getReturnValue(); // found
-                                                                     // two
-                                                                     // states
-                                                                     // that are
-                                                                     // equal
+            
+            //Find out if there was a matched state in history
+            boolean foundMatch = ListOfNewEpisodes.getReturnValue(); 
 
-            // this is in analyzeMove in calls addToTransitionTable();
-            // Hey if not seen this pattern before, I need to be added to the
-            // transition table.
-            // Uses the last State in the currentPath();
-            // this.addToTransitionTable();
-
-            // step 6
-            // if(conjecturePathReturn.getReturnValue()){
+            
             if (foundMatch) {
-                // Move by conjecture Path
-                // this.moveToEnd(conjecturePathReturn);
-                this.moveToEnd(); // needs to change name to
-                                  // UpdateTransitionTable
+                //add the new transition to the table
+                this.moveToEnd(); 
+                
+                //add the current path to the episodic memory
                 this.addCurrentPathToEpisodic();
-            } else {
-
+                
+                //clear the current path to get ready for the next moves
+                this.currentPath.clear();
+            } 
+            else {
+            	//No match found
                 while (!foundMatch) {
                     if (ListOfNewEpisodes.getConjecturePath() != null) {
+                    	//add the path found to the transition table
                         this.addPathToTransTable(ListOfNewEpisodes);
-                    }
-                    // Need to update the transition table by saying where the
-                    // move you made got you.
+                    }//if
+                   
+                    //add the current path to the episodic memory
                     this.addCurrentPathToEpisodic();
+                    
+                    //TODO:WHAT MOVE ARE WE ANALYZING NOW
                     ListOfNewEpisodes = this.analyzeMove();
+                    
                     foundMatch = ListOfNewEpisodes.getReturnValue();
 
-                }
+                }//while
+                
                 this.moveToEnd();
                 this.addCurrentPathToEpisodic();
+                
+                //clear the current path to get ready for next move
+                this.currentPath.clear();
 
-                currentPath.clear();
-
-            }
-            // need to update the transition table by saying where the move you
-            // made got you.
-            // this.addPathToTransTable();
-
-        }
-        // step 8 b loop
-        // step 9 beq
-
-        // use equiv states to replace transition table values.
-        // this.optimizeTransTable();
-
+            }//else
+        }//while
     }
 }

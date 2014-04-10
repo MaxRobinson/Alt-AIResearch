@@ -277,7 +277,7 @@ public class TransitionTable {
      *         in the alphabet
      * 
      */
-    private int findIndexOfChar(char command) {
+    public int findIndexOfChar(char command) {
         int index = UNKNOWN_TRANSITION;
         for (int j = 0; j < alphabet.length; ++j) {
             if (alphabet[j] == command) {
