@@ -302,7 +302,6 @@ public class Test_smartAgent {
                 return false;
             }
         }
-
         return true;
     }
 }
