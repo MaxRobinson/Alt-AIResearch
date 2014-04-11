@@ -177,7 +177,7 @@ public class smartAgent extends Agent {
         int currentMatchedPathLength = 0;
 
         // Find all indices in episodic memory of matching episodes
-        indexList = checkIfEpisodeOccured(stateToBeMatched); //Should take list as param as well
+        indexList = checkIfEpisodeOccurred(stateToBeMatched); //Should take list as param as well
 
         if (indexList.size() > 0) {
             currentMatchedPathLength++;
@@ -213,7 +213,7 @@ public class smartAgent extends Agent {
                                                   // OUT!!!! Later of course
             indexListTemp = indexList;
 
-            indexList = checkIfEpisodeOccured(
+            indexList = checkIfEpisodeOccurred(
                     decrementArrayList(indexList, currentMatchedPathLength),
                     stateToBeMatched);
             if (indexList.size() > 0) {
@@ -266,13 +266,11 @@ public class smartAgent extends Agent {
         // not.
         if (indexList.get(indexList.size() - 1) > -1) {
             boolean foundMatch = true;
-            ListAndBool ListOfNewEpisodes = new ListAndBool(
-                    newEpisodePathList.getConjecturePath(), foundMatch);
+            ListAndBool ListOfNewEpisodes = new ListAndBool(newEpisodePathList.getConjecturePath(), foundMatch);
             return ListOfNewEpisodes;
         } else {
             boolean foundMatch = false;
-            ListAndBool ListOfNewEpisodes = new ListAndBool(
-                    newEpisodePathList.getConjecturePath(), foundMatch);
+            ListAndBool ListOfNewEpisodes = new ListAndBool(newEpisodePathList.getConjecturePath(), foundMatch);
             return ListOfNewEpisodes;
         }
     }
@@ -326,7 +324,7 @@ public class smartAgent extends Agent {
     }//decrementArrayList
 
     /**
-     * checkIfEpisodeOccured()
+     * checkIfEpisodeOccurred()
      * 
      * Given a list of episodes and an episode to check for, runs through the
      * list searching for the episode
@@ -337,7 +335,7 @@ public class smartAgent extends Agent {
      *         found
      * 
      */
-    public ArrayList<Integer> checkIfEpisodeOccured(ArrayList<Integer> indexList, Episode episode) {
+    public ArrayList<Integer> checkIfEpisodeOccurred(ArrayList<Integer> indexList, Episode episode) {
         ArrayList<Integer> tempList = new ArrayList<Integer>();
         for (int i = 0; i < indexList.size(); ++i) {
             if (episode.equals(episodicMemory.get(indexList.get(i)))) {
@@ -345,7 +343,7 @@ public class smartAgent extends Agent {
             }
         }
         return tempList;
-    }//checkIfEpisodeOccured
+    }//checkIfEpisodeOccurred
 
     /**
      * checkIfEpisodeOccurred()
@@ -357,7 +355,7 @@ public class smartAgent extends Agent {
      * @return ArrayList<Integer> - List of indeces in episodic memory where a
      *         matching episode was found
      */
-    public ArrayList<Integer> checkIfEpisodeOccured(Episode episode) {
+    public ArrayList<Integer> checkIfEpisodeOccurred(Episode episode) {
     	ArrayList<Integer> indexList = new ArrayList<Integer>();
         for (int i = 0; i < episodicMemory.size(); ++i) {
             if (episodicMemory.get(i).equals(episode)) {
@@ -365,7 +363,7 @@ public class smartAgent extends Agent {
             }
         }
         return indexList;
-    }//checkIfEpisodeOccured
+    }//checkIfEpisodeOccurred
 
     /**
      * buildConjecturePath()

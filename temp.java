@@ -21,7 +21,7 @@ public class temp extends smartAgent {
         int currentMatchedPathLength = 0;
         
         //Find all indices in episodic memory of matching episodes
-        indexList = checkIfEpisodeOccured(stateToMatch);
+        indexList = checkIfEpisodeOccurred(stateToMatch);
         
         //check to see if any episodes were matched
         if(indexList.size()>0){
@@ -97,7 +97,7 @@ public class temp extends smartAgent {
         //decriment all of the indices in the index list by 1
         ArrayList<Integer> newIndexList = decrementArrayList(indexList,1);
         //check if episode has occurred.
-        ArrayList<Integer> resultIndexList = checkIfEpisodeOccured(newIndexList,stateToMatch);
+        ArrayList<Integer> resultIndexList = checkIfEpisodeOccurred(newIndexList,stateToMatch);
         
         
         return resultIndexList; //Place Holder

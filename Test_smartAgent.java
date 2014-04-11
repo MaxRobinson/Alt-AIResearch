@@ -206,18 +206,51 @@ public class Test_smartAgent {
 		assertTrue("The command chosen is in the alphabet's range",inAlphabetRange);
 	}
 	
-	
-	
+	/**
+	 * testDecrementArrayList()
+	 * 
+	 * Tests the functionality of the decrementArrayList method
+	 * 
+	 * This method is meant to take an arrayList of Integer and decrement 
+	 * every element by a given decrement amount 
+	 */
+	@Test
+	public void testDecrementArrayList() {
+		smartAgent sA = new smartAgent();
+		ArrayList<Integer> arrayList = new ArrayList<Integer>();
+		
+		for(int i=0;i<100;i++) {
+			arrayList.add(i+1);
+		}
+		
+		//arrayList is now initialized, make a manual copy that is decremented by 1
+		ArrayList<Integer> decArrayList = new ArrayList<Integer>();
+		
+		for(int i=0;i<100;i++) {
+			decArrayList.add(i);
+		}
+		
+		//ensure that the two array lists differ by 1
+		for(int i=0;i<arrayList.size();i++){
+			assertTrue("Values differ by 1",arrayList.get(i) -1 == decArrayList.get(i));
+		}
+		
+		//ensure that the decrementArrayList function follows the same protocol
+		ArrayList<Integer> decrementedList = sA.decrementArrayList(arrayList, 1);
+		
+		for(int i=0;i<decArrayList.size();i++) {
+			assertTrue("All values are reasonable",decArrayList.get(i) == decrementedList.get(i));
+		}
+	}
 	
 	//Still to test
 	/*
-	 * modifyTransitionTable
-	 * decrementArrayList
-	 * checkIfEpisodeOccured (Overloaded...check both)
+	 * 
+	 * checkIfEpisodeOccurred (Overloaded...check both)
 	 * buildConjecturePath
 	 * testConjecture
 	 * moveToEnd (DEPRECATED...SHOULD NOT BE USED)
-	 * 
+	 * modifyTransitionTable
 	 */
 	
 	
