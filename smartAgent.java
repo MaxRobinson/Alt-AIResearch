@@ -326,10 +326,10 @@ public class smartAgent extends Agent {
     /**
      * checkIfEpisodeOccurred()
      * 
-     * Given a list of episodes and an episode to check for, runs through the
-     * list searching for the episode
+     * Given a list of indexes and an episode to check for, runs through episodic memory
+     * searching for the episode at the indexes given
      * 
-     * @param indexList - List of episodes to search
+     * @param indexList - List of indexes to search
      * @param episode - Episode to search for
      * @return ArrayList<Integer> - List of all indeces where the episode was
      *         found

@@ -218,15 +218,9 @@ public class Test_smartAgent {
 	public void testDecrementArrayList() {
 		smartAgent sA = new smartAgent();
 		ArrayList<Integer> arrayList = new ArrayList<Integer>();
-		
+		ArrayList<Integer> decArrayList = new ArrayList<Integer>();
 		for(int i=0;i<100;i++) {
 			arrayList.add(i+1);
-		}
-		
-		//arrayList is now initialized, make a manual copy that is decremented by 1
-		ArrayList<Integer> decArrayList = new ArrayList<Integer>();
-		
-		for(int i=0;i<100;i++) {
 			decArrayList.add(i);
 		}
 		
@@ -243,10 +237,115 @@ public class Test_smartAgent {
 		}
 	}
 	
+	
+	/**
+	 * testCheckIfEpisodeOccurred
+	 * 
+	 * Tests the functionality of the checkIfEpisodeOccurred methods.
+	 * 
+	 * Both methods are meant to search for an Episode in a list of episodes
+	 * and return a list of indexes of all matching episodes.
+	 * 
+	 */
+	@Test 
+	public void testCheckIfEpisodeOccurred() {
+		//Need a list of episodes to search through
+		smartAgent sA = new smartAgent();
+		ArrayList<Episode> episodes = new ArrayList<Episode>();
+		episodes.add(new Episode(' ', 0, 1)); 
+		episodes.add(new Episode('b', 0, 2)); 
+		episodes.add(new Episode('c', 0, 3)); 
+		episodes.add(new Episode('b', 0, 4)); 
+		episodes.add(new Episode('c', 0, 5));
+		episodes.add(new Episode('d', 2, 6));
+		
+		sA.episodicMemory=episodes;
+		//Check to see if an episode occurred that is not in the list
+		Episode epToCheck = new Episode('e', 1,12);
+		ArrayList<Integer> returnList = sA.checkIfEpisodeOccurred(epToCheck);
+		
+		assertTrue("No index found for non-existent episode",returnList.isEmpty());
+		
+		//Check to make sure episode that is in list is returned with proper index
+		epToCheck = new Episode('d',2,9000);
+		returnList = sA.checkIfEpisodeOccurred(epToCheck);
+		
+		//make sure there is only one thing in the list
+		
+		assertTrue("Only one thing in the list",returnList.size()==1);
+		
+		//make sure the index is the proper one
+		int realIndex = 5;
+		assertTrue("Index returned is correct",returnList.get(0) == realIndex);
+		
+		//make sure that more than one index can be returned
+		epToCheck = new Episode('b',0,123);
+		returnList = sA.checkIfEpisodeOccurred(epToCheck);
+		
+		//ensure size of list is 2
+		assertTrue("List has correct number of entries",returnList.size() == 2);
+		
+		//ensure that both indexes are correct
+		boolean correctIndexes = true;
+		for(Integer index : returnList) {
+			if(index !=1 && index !=3) {
+				correctIndexes = false;
+			}
+		}
+		
+		//all indexes returned are as they should be
+		assertTrue("Indexes returned are correct",correctIndexes);
+		
+		
+		//-------------------NOW CHECK THE OVERLOADED METHOD---------------------------//
+		
+		ArrayList<Integer> indexList = new ArrayList<Integer>();
+		indexList = sA.checkIfEpisodeOccurred(epToCheck);  //List should now have 1 & 3
+		
+		//given the set index list the check if episode occurred method should simply return the same list
+		returnList = sA.checkIfEpisodeOccurred(indexList, epToCheck);
+		
+		//returnList should equal indexList
+		boolean sameLists= true;
+		for(int i=0;i<indexList.size() && i< returnList.size();i++) {
+			if(indexList.get(i) != returnList.get(i)) {
+				sameLists = false;
+			}
+		}
+		
+		assertTrue("Indexes are properly returned in overloaded method",sameLists);
+		
+		//ensure the returnList is empty given a list of indexes that correspond to an episode not being searched for
+		epToCheck = new Episode('e',2,21);
+		returnList = sA.checkIfEpisodeOccurred(indexList, epToCheck);
+		
+		assertTrue("Return List is empty",returnList.isEmpty());
+		
+		ArrayList<Integer> newIndexes = new ArrayList<Integer>(indexList);
+		//check to make sure only some of the indexes are returned
+		indexList.clear();
+		for(int i=0;i<sA.episodicMemory.size();i++) {
+			indexList.add(i);
+		}
+		
+		epToCheck = new Episode('b',0,123);
+		returnList = sA.checkIfEpisodeOccurred(indexList, epToCheck);
+		
+		sameLists = true;
+		for(int i=0;i<returnList.size() && i<newIndexes.size();i++) {
+			if(returnList.get(i) != newIndexes.get(i)) {
+				sameLists = false;
+			}
+		}
+		
+		assertTrue("List contains appropriate values",sameLists);
+		
+	}
+	
+	
 	//Still to test
 	/*
 	 * 
-	 * checkIfEpisodeOccurred (Overloaded...check both)
 	 * buildConjecturePath
 	 * testConjecture
 	 * moveToEnd (DEPRECATED...SHOULD NOT BE USED)
