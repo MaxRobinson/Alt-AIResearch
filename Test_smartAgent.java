@@ -352,12 +352,64 @@ public class Test_smartAgent {
 	 * modifyTransitionTable
 	 */
 	
+    /**
+     * testAnalyzeMove
+     *
+     * Tests the functionality of the analyzeMove method.
+     *
+     * determine a hypothesized path the goal
+     *
+     * SCENARIO:
+     *   Actual FSM:
+     *                 a   b
+     *             1   1   2
+     *             2   1   3
+     *             3   (goal)
+     *
+     *  Agent's perceived FSM:
+     *                 a   b
+     *             1   2   7
+     *             2   -   3
+     *             3   4   -
+     *             4   -   5
+     *             5   -   6
+     *             6   (goal)
+     *             7   -   -
+     *
+     */
+    @Test
+    public void testAnalyzeMove() {
+        //Create the environment
+        StateMachineEnvironment testEnv = new StateMachineEnvironment(3, 2);
+        testEnv.transition[0][0] = 0;
+        testEnv.transition[0][1] = 1;
+        testEnv.transition[1][0] = 0;
+        testEnv.transition[1][1] = 2;
+        testEnv.transition[2][0] = 2;
+        testEnv.transition[2][1] = 2;
+        testEnv.findShortestPaths();
+
+        //episodes from the beginning to the last goal
+        smartAgent sA = new smartAgent(testEnv);
+        ArrayList<Episode> episodes = new ArrayList<Episode>();
+        episodes.add(new Episode(' ', 0, 1));
+        episodes.add(new Episode('a', 0, 2));
+        episodes.add(new Episode('b', 1, 3));
+        episodes.add(new Episode('a', 0, 4));
+        episodes.add(new Episode('b', 1, 5));
+        episodes.add(new Episode('b', 2, 6));
+        sA.episodicMemory=episodes;
+
+        //Current path is only one episode
+        sA.currentPath.add(new Episode('b',1, 7));
+
+        //Make the call
+        sA.analyzeMove(sA.currentPath);
+
+    }//testAnalyzeMove
 	
 	
-	
-	
-	
-	
+
 	
 	//HELPER METHODS
 
