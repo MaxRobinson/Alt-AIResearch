@@ -2,11 +2,11 @@ package randomPackage;
 
 import java.util.ArrayList;
 
-public class temp {
+public class temp extends smartAgent{
     
     public ArrayList<Episode> episodicMemory = new ArrayList<Episode>(); //only to reduce red marks
     
-    /**
+    /** Done
      * 
      * @param currentPath
      * @return
@@ -39,6 +39,7 @@ public class temp {
         }//if
         else {  //if we get here, we have not found a match for the state we are looking for.
             ListAndBool NoMatch = new ListAndBool(null,false);
+            return NoMatch;
         }
         
         //could be in with the loop in another method? 
@@ -63,8 +64,8 @@ public class temp {
         }//while
         
         
-    // HERE We have a list of Indices that go as far back as the currentMatchedPathLength from the
-    //  original state we wanted to match.
+        // HERE We have a list of Indices that go as far back as the currentMatchedPathLength from the
+        //  original state we wanted to match.
         int index = indexList.get(indexList.size()-1) + currentMatchedPathLength; //gets back to the episode we want
         
         //build Conjecture Path
@@ -83,7 +84,7 @@ public class temp {
     }//analyzeMove();
     
     
-    /**
+    /** Done
      * 
      * @param listOfEpisodes
      * @param indexList
