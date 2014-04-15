@@ -2,11 +2,12 @@ package randomPackage;
 
 import java.util.ArrayList;
 
+
 public class temp extends smartAgent {
-    
+   
     //public ArrayList<Episode> episodicMemory = new ArrayList<Episode>(); //only to reduce red marks
     
-    /**
+    /** Done
      * 
      * @param currentPath
      * @return
@@ -65,6 +66,7 @@ public class temp extends smartAgent {
         
         
         // HERE We have a list of Indices that go as far back as the currentMatchedPathLength from the
+
         // original state we wanted to match.
         int index = indexList.get(indexList.size()-1) + currentMatchedPathLength; //gets back to the episode we want
         
@@ -84,7 +86,7 @@ public class temp extends smartAgent {
     }//analyzeMove();
     
     
-    /**
+    /** Done
      * 
      * @param listOfEpisodes
      * @param indexList
@@ -94,7 +96,7 @@ public class temp extends smartAgent {
         if(indexList.size() == 1){
             return indexList;
         }
-        //decriment all of the indices in the index list by 1
+        //decrement all of the indices in the index list by 1
         ArrayList<Integer> newIndexList = decrementArrayList(indexList,1);
         //check if episode has occurred.
         ArrayList<Integer> resultIndexList = checkIfEpisodeOccurred(newIndexList,stateToMatch);
