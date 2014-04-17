@@ -80,6 +80,23 @@ public class RandomAgent extends Agent {
 
         // ********************************************************
 
+    	StateMachineEnvironment easy = new StateMachineEnvironment(2,2);
+    	
+    	easy.transition[0][0] = 0;
+    	easy.transition[0][1] = 1;
+    	easy.transition[1][0] = 1;
+    	easy.transition[1][1] = 1;
+    	easy.findShortestPaths();
+    	
+    	easy.printStateMachine();
+    	
+    	smartAgent easyTest = new smartAgent(easy);
+    	easyTest.run();
+    	
+    	
+    	
+    	//------------------------------------------------------
+    	/*
         StateMachineEnvironment testEnv9000 = new StateMachineEnvironment(5, 3);
         // testEnv9000.printStateMachine();
 
@@ -105,7 +122,7 @@ public class RandomAgent extends Agent {
         testEnvStatic.printStateMachine();
 
         smartAgent realTest = new smartAgent(testEnvStatic);
-        realTest.run();
+        realTest.run();*/
 
     }
 

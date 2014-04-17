@@ -88,6 +88,8 @@ public class smartAgent extends Agent {
 	public void initTransTable(ArrayList<Episode> path) {
 		transitionTable.addPath(path);
 
+		transitionTable.addEmptyRow();
+		
 		// The last state in the path is the goal state, so mark it as such
 		StateID[] goalStateRow = transitionTable
 				.get(transitionTable.size() - 1);
@@ -506,7 +508,7 @@ public class smartAgent extends Agent {
 		// many times
 		int finalIndex = index + tempIndex - 1;
 		// add final state that takes the agent to the goal
-		conjecturePath.add(new Episode(episodicMemory.get(finalIndex - 1)));
+		conjecturePath.add(new Episode(episodicMemory.get(finalIndex)));
 		return conjecturePath;
 	}// buildConjecturePath
 
@@ -733,5 +735,6 @@ public class smartAgent extends Agent {
 
 			}// else
 		}// while
+		transitionTable.print();
 	}
 }
