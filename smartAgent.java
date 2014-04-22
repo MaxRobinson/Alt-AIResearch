@@ -129,7 +129,7 @@ public class smartAgent extends Agent {
 
 		
 		//TODO:If the encoded sensor value indicates the new state is the goal
-		//update the stateID to the goalStateID which will be a global variable
+		//update the stateID to the goalStateID which is a global variable
 		int nextState = numStates;
 		if(encodedSensorValue == MYSTERY_AND_GOAL_ON) {
 			//set the nextState to the Goal State ID
@@ -138,6 +138,7 @@ public class smartAgent extends Agent {
 		else {
 			//not at the goal so there is one more state, update accordingly
 			++numStates;
+			nextState = numStates;
 		}
 		
 		// add the move to the current path
@@ -745,9 +746,23 @@ public class smartAgent extends Agent {
 
 					// add the current path to the episodic memory
 					this.addCurrentPathToEpisodic();
-
+					
+					this.transitionTable.addEmptyRow();
+					// need to update the transition Table so that we know that there is 
+						// a new state that has been added to episodic memory with unknown trans
 					// TODO:WHAT MOVE ARE WE ANALYZING NOW 
-					//-- we are infinite looping before we get here.
+						//Probs should add call to make exploratory move
+						// we can call MakeExploritoryMove with the StateID of the most recent thing
+							// in episodic memory, The thing we just added to the trans table, that way
+								// try to get to the end. 
+					// ******* we cannot call findNextOpenState because it will give us the same state 
+					// ****** that got us here, as well as we have to now move and look from the place 
+					// ****** we are already in the environment. ******
+					
+					int nextMove = currentPath.get(currentPath.size()-1).stateID.get();
+					this.makeExploratoryMove(nextMove);
+					
+					//maybe clear current Path? maybe not? unsure, lets see how runs.
 					ListOfNewEpisodes = this.analyzeMove(currentPath);
 
 					foundMatch = ListOfNewEpisodes.getReturnValue();
