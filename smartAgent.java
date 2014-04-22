@@ -28,6 +28,8 @@ public class smartAgent extends Agent {
 
 	// Keeps the agents current path that it is taking
 	protected ArrayList<Episode> currentPath = new ArrayList<Episode>();
+	
+	protected StateID goalState;
 
 	/**
 	 * Constructor
@@ -125,8 +127,21 @@ public class smartAgent extends Agent {
 		sensor = this.env.tick(nextMove);
 		int encodedSensorValue = encodeSensors(sensor);
 
+		
+		//TODO:If the encoded sensor value indicates the new state is the goal
+		//update the stateID to the goalStateID which will be a global variable
+		int nextState = numStates;
+		if(encodedSensorValue == MYSTERY_AND_GOAL_ON) {
+			//set the nextState to the Goal State ID
+			nextState = goalState.get();
+		}
+		else {
+			//not at the goal so there is one more state, update accordingly
+			++numStates;
+		}
+		
 		// add the move to the current path
-		currentPath.add(new Episode(nextMove, encodedSensorValue, ++numStates));
+		currentPath.add(new Episode(nextMove, encodedSensorValue, nextState));
 	}// makeExploratoryMove
 
 	/**
@@ -246,7 +261,7 @@ public class smartAgent extends Agent {
 	}// analyzeMove();
 
 	/**
-	 * Done
+	 * narrowMatches()
 	 * 
 	 * @param listOfEpisodes
 	 * @param indexList
@@ -663,6 +678,18 @@ public class smartAgent extends Agent {
 		transitionTable.addPath(newEpisodes);
 	}// addPathToTransitionTable
 
+	
+	/**
+	 * findRandomPath()
+	 * 
+	 * 
+	 */
+	public void findRandomPath() {
+		super.findRandomPath();
+		//numStates should now be equal to the goal state ID, init goalState
+        goalState = new StateID(numStates);
+	}
+	
 	/**
 	 * run()
 	 * 
