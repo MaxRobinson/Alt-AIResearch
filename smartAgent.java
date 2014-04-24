@@ -172,7 +172,7 @@ public class smartAgent extends Agent {
 	 *         not
 	 */
 	public boolean isTransitionTableFull() {
-		return !transitionTable.containsUnknownTransitions();
+		return !transitionTable.containsUnknownTransitions(goalState);
 	}// isTransitionTableFull
 
 	/**
@@ -745,7 +745,7 @@ public class smartAgent extends Agent {
 					}// if
 
 					// add the current path to the episodic memory
-					this.addCurrentPathToEpisodic();
+					//this.addCurrentPathToEpisodic();
 					
 					this.transitionTable.addEmptyRow();
 					// need to update the transition Table so that we know that there is 

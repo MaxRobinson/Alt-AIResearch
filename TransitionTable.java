@@ -218,13 +218,21 @@ public class TransitionTable {
      * @return boolean - True if the table contains '-1' --OR-- False if the
      *         table has only 'other' entries
      */
-    public boolean containsUnknownTransitions() {
-        for (StateID[] row : table) {
-            for (int i = 0; row != null && i < row.length; ++i) {
-                if (row[i].get() == -1) {
-                    return true;
+    public boolean containsUnknownTransitions(StateID goalState) {
+    	for (StateID[] row : table) {
+            boolean containsGoal = false;
+			for (int i = 0; row != null && i < row.length; ++i) {
+                if (row[i].get() == goalState.get()) {
+                    containsGoal = true;
                 }
             }
+			if(!containsGoal){
+				for (int j = 0; row != null && j < row.length; ++j) {
+					if (row[j].get() == -1) {
+						return true;
+					}
+				}
+			}
         }
         return false;
     }
