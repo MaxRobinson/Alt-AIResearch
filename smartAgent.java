@@ -625,7 +625,10 @@ public class smartAgent extends Agent {
 			return;
 		}
 		// END DEBUGGING ADDITION
-
+		
+		// This actually not doing wat it is supposed to be doing. 
+		// it is updating the goal state with the new state ID not the state we conjectured 
+		// is the same as another. 
 		if (test1) {
 			transitionTable.get(indexOfRow)[indexOfChar] = currentPath
 					.get(currentPath.size() - 1).stateID;
@@ -717,7 +720,11 @@ public class smartAgent extends Agent {
 				System.out.println("No more unknown transitions");
 				return;
 			}
-
+			
+			// ********* call buildPath, with the target and source states *************
+			// ********* then add the list of states to the current path. ************
+			
+			
 			// Make a move from the chosen state
 			this.makeExploratoryMove(next);
 

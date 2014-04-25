@@ -146,28 +146,30 @@ public class Test_TransitionTable {
         char[] alphabet = createAlphabet(5);
 
         TransitionTable transitionTable = new TransitionTable(alphabet);
+        
+        StateID goalState = new StateID(10);
 
         assertTrue(
                 "With no rows added the table should be full as there are no unknown transitions",
-                !transitionTable.containsUnknownTransitions());
+                !transitionTable.containsUnknownTransitions(goalState));
 
         transitionTable.addNullRow();
 
         assertTrue("With a null row added, the table is still full",
-                !transitionTable.containsUnknownTransitions());
+                !transitionTable.containsUnknownTransitions(goalState));
 
         transitionTable
                 .addRow(createRow(9000, transitionTable.alphabet.length));
 
         assertTrue(
                 "With a full row added with no unknown transitions, the table is still full",
-                !transitionTable.containsUnknownTransitions());
+                !transitionTable.containsUnknownTransitions(goalState));
 
         transitionTable.addEmptyRow();
 
         assertTrue(
                 "With an empty row added to the table, the table is not full",
-                transitionTable.containsUnknownTransitions());
+                transitionTable.containsUnknownTransitions(goalState));
     }
 
     /**
